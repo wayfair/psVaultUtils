@@ -1,0 +1,6 @@
+*.mof
+*.pfx
+*.cer
+*.nupkg
+*.nuspec
+*.log
