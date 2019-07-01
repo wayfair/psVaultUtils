@@ -7,7 +7,7 @@ function Revoke-VaultLeader {
     }
 
     process {
-        $uri = $(Get-VaultStatus).ClusterLeader
+        $uri = $(Get-VaultStatus).cluster_leader
 
         $irmParams = @{
             Uri    = "$uri/v1/sys/step-down"
@@ -17,7 +17,7 @@ function Revoke-VaultLeader {
 
         try {
             Invoke-RestMethod @irmParams
-            Write-Verbose "Initiated Step-Down on Active Node: $uri"
+            Write-Host "Initiated Step-Down on Active Node: $uri"
         }
         catch {
             throw

@@ -10,7 +10,7 @@ function Protect-Vault {
     }
 
     process {
-        $uri = $(Get-VaultStatus).ClusterLeader
+        $uri = $(Get-VaultStatus).cluster_leader
 
         $irmParams = @{
             Uri    = "$uri/v1/sys/seal"
@@ -20,7 +20,7 @@ function Protect-Vault {
 
         try {
             Invoke-RestMethod @irmParams
-            Write-Verbose "Sealed Active Vault Node: $uri"
+            Write-Host "Sealed Active Vault Node: $uri"
         }
         catch {
             throw
