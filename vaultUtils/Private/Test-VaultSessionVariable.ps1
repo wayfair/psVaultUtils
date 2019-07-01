@@ -51,7 +51,7 @@ function Test-VaultSessionVariable {
         }
 
         if ($runGetSetVaultToken) {
-            Get-VaultToken -JustToken | Set-VaultToken
+            Get-VaultLoginToken -JustToken | Set-VaultLoginToken
         }
     }
 

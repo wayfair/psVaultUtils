@@ -1,4 +1,4 @@
-function Get-VaultToken {
+function Get-VaultLoginToken {
 <#
 .Synopsis
     Retrieves a token that can be used to authenticate to Vault.
@@ -7,10 +7,10 @@ function Get-VaultToken {
     Retrives a vault token, given already-defined variables: VAULT_ADDR, VAULT_CRED and VAULT_LOGIN_METHOD.
 
     A vault token is used to authenticate to Vault. Without a valid token, most API endpoints cannot be interacted with.
-    This function is almost always paired with Set-VaultToken; VAULT_TOKEN needs to set in order to utilize most funtions in vaultUtils.
+    This function is almost always paired with Set-VaultLoginToken; VAULT_TOKEN needs to set in order to utilize most funtions in vaultUtils.
 
 .EXAMPLE
-    PS> Get-VaultToken
+    PS> Get-VaultLoginToken
 
     request_id     : f77d1e9e-29a0-3daf-a0a3-96fbce9e28e8
     lease_id       :
@@ -24,17 +24,17 @@ function Get-VaultToken {
                     renewable=True; entity_id=357f788d-75cf-c16d-f6d9-cdbd6c5deee8; token_type=service; orphan=True}
 
 .EXAMPLE 
-    PS> Get-VaultToken -JustToken
+    PS> Get-VaultLoginToken -JustToken
 
     client_token
     ------------
     s.J9CnwypEiNa6sPB20lmmxZh2
 
 .EXAMPLE
-    PS> Get-VaultToken | Set-VaultToken
+    PS> Get-VaultLoginToken | Set-VaultLoginToken
 
     This command authenticates to vault using credentials and login method defined in VAULT_CRED and VAULT_LOGIN_METHOD,
-    and then passes the resulting object to Set-VaultToken, which assigns the token to VAULT_TOKEN.
+    and then passes the resulting object to Set-VaultLoginToken, which assigns the token to VAULT_TOKEN.
 #>
     [CmdletBinding()]
     param(

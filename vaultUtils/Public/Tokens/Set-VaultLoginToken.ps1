@@ -1,4 +1,4 @@
-function Set-VaultToken {
+function Set-VaultLoginToken {
 <#
 .Synopsis
     Assigns a specified token to VAULT_TOKEN.
