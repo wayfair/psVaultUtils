@@ -70,7 +70,31 @@
     
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
+        'Get-VaultSessionVariable'
+        'Set-VaultSessionVariable'
+        'Clear-VaultSessionVariable'
 
+        'Get-VaultStatus'
+        'Protect-Vault'
+        'Unprotect-Vault'
+        'Revoke-VaultLeader'
+
+        'Get-VaultToken'
+        'Set-VaultToken'
+        
+        'Get-VaultRandomBytes'
+        'Get-VaultDataHash'
+
+        'New-VaultKVSecret'
+        'Get-VaultKVSecret'
+
+        'Get-VaultKVEngine'
+        'Set-VaultKVEngine'
+
+        'New-VaultWrapping'
+        'Show-VaultWrapping'
+        'Get-VaultWrapping'
+        'Update-VaultWrapping'
     )
     
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
@@ -81,7 +105,15 @@
     
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     AliasesToExport = @(
+        'Seal-Vault'
+        'Unseal-Vault'
 
+        'Stepdown-VaultLeader'
+
+        'Unwrap-VaultWrapping'
+        'Wrap-VaultWrapping'
+        'Lookup-VaultWrapping'
+        'Rewrap-VaultWrapping'
     )
     
     # DSC resources to export from this module

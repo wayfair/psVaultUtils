@@ -2,6 +2,14 @@
 $publicFuntions  = @(Get-ChildItem -Path "$PSScriptRoot\Public"  -Recurse -Include *.ps1 -ErrorAction SilentlyContinue)
 $privateFuntions = @(Get-ChildItem -Path "$PSScriptRoot\Private" -Recurse -Include *.ps1 -ErrorAction SilentlyContinue)
 
+#region Add TLS 1.2 to Net.ServcePointManager
+
+if ([Net.ServicePointManager]::SecurityProtocol  -notmatch "Tls12") {
+    [Net.ServicePointManager]::SecurityProtocol += [Net.SecurityProtocolType]::Tls12
+}
+
+#endregion
+
 #Dot source the files
 foreach ($import in @($publicFuntions + $privateFuntions)) {
     try {
@@ -20,5 +28,13 @@ foreach ($import in @($publicFuntions + $privateFuntions)) {
 Export-ModuleMember `
     -Function $publicFuntions.BaseName `
     -Alias @(
+        'Seal-Vault'
+        'Unseal-Vault'
 
+        'Stepdown-VaultLeader'
+
+        'Unwrap-VaultWrapping'
+        'Wrap-VaultWrapping'
+        'Lookup-VaultWrapping'
+        'Rewrap-VaultWrapping'
     )
