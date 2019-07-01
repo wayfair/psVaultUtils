@@ -1,4 +1,17 @@
 function Revoke-VaultLeader {
+<#
+.Synopsis
+    Initiates the step-down procedure for the active vault node.
+
+.DESCRIPTION
+    Revoke-VaultLeader triggers the step-down procedure on the active vault node, 
+    causing it to become a standby node, and causing another node in the cluster to take on the role of being the active node.
+
+.EXAMPLE
+    PS> Revoke-VaultLeader
+
+    Initiated Step-Down on Active Node: https://DEVBO1CHVAULT02.devcorp.wayfair.com:443 
+#>
     [CmdletBinding()]
     param()
 

@@ -1,11 +1,38 @@
 function Update-VaultWrapping {
+<#
+.Synopsis
+    Rewraps wrapped data with a new token, thus refreshing its TTL.
+
+.DESCRIPTION
+    Update-VaultWrapping rewraps wrapped data with a new token, refreshing the TTL of the token in the process.
+
+    The old token is invalidated.
+
+    This can be used for long-term storage of a secret in a response-wrapped token when rotation is a requirement.
+
+.EXAMPLE
+    PS> Update-VaultWrapping -Token s.yGdKDWpLBFYUPMbtnHZkmJZ7
+
+    request_id     :
+    lease_id       :
+    renewable      : False
+    lease_duration : 0
+    data           :
+    wrap_info      : @{token=s.oYgKq8URLMmyIr9vBCCixaeR; accessor=Wg827LaoZLQESPXhFs4jjSQe; ttl=216000;
+                    creation_time=2019-07-01T16:01:46.0137524-04:00; creation_path=sys/wrapping/wrap}
+    warnings       :
+    auth           :
+#>
     [CmdletBinding()]
     param(
+        #Specifies a token whose wrapped data should be rewrapped.
         [String] $Token,
 
+        #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
         [ValidateSet('Json','PSObject')]
         [String] $OutputType = 'PSObject',
 
+        #Specifies whether or not just the data should be displayed in the console.
         [Switch] $JustData
     )
 

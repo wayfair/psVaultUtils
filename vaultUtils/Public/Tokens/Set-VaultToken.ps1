@@ -1,14 +1,36 @@
-<#
-Sets $global:VAULT_TOKEN to a Vault Token.
-#>
 function Set-VaultToken {
+<#
+.Synopsis
+    Assigns a specified token to VAULT_TOKEN.
+
+.DESCRIPTION
+    Assigns a specified vault token to the global variable VAULT_TOKEN.
+
+    A vault token is used to authenticate to Vault. Without a valid token, most API endpoints cannot be interacted with.
+    This function is almost always paired with Get-VaultToken; VAULT_TOKEN needs to set in order to utilize most funtions in vaultUtils.
+
+.EXAMPLE
+    PS> Set-VaultToken -Token s.J9CnwypEiNa6sPB20lmmxZh2 -Passthru
+
+    Name                           Value
+    ----                           -----
+    VAULT_TOKEN                    s.J9CnwypEiNa6sPB20lmmxZh2
+
+.EXAMPLE 
+    PS> Get-Vaulttoken -JustToken | Set-VaultToken
+
+    This command does not produce any output.
+#>
     [CmdletBinding()]
     param(
+        #Specifies a vault token to assign to VAULT_TOKEN.
         [Parameter(
-            ValueFromPipeline = $true
+            ValueFromPipeline = $true,
+            Mandatory = $true
         )]
         $Token,
 
+        #Specifies that the resulting VAULT_TOKEN variable should be displayed in the console.
         [Switch] $Passthru
     )
 
@@ -31,13 +53,19 @@ function Set-VaultToken {
                 }
                 else {
                     #This is not the Json you are looking for...
-                    Write-Error "The specified JSON structure does not contain a path '.auth.client_token' or '.client_token'"
+                    Write-Error "The specified JSON structure does not contain a property '.auth.client_token' or '.client_token'"
                     return
                 }
             }
             catch {
-                Write-Error "The specified JSON is malformed or otherwise could not be converted into a PSObject."
-                return
+                if ($Token -match "^s\..{24}$") {
+                    $iToken = $Token
+                }
+                else {
+                    Write-Error "The specified string is malformed or otherwise could not be parsed as a token."
+                    return
+                }
+                
             }
         }
         else {

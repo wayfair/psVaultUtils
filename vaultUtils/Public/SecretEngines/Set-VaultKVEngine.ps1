@@ -1,17 +1,38 @@
 function Set-VaultKVEngine {
+<#
+.Synopsis
+    Modifies the CAS Required and/or Max Versions attributes of a KV Engine.
+
+.DESCRIPTION
+    Set-VaultKVEngine can be used to update the Max Versions or CAS Required attributes of a KV Engine.
+    These fields determine the maximum number of versions a given secret can contain, 
+    and whether or not the CheckAndSet (CAS) flag needs to be specified when writing new KV secrets to the KV engine.
+
+.EXAMPLE
+    PS> Set-VaultKVEngine -Engine test-kv -MaxVersions 5 -CheckAndSetRequired:$false
+
+    Changes the max_versions of the 'test-kv' engine to 5, and sets cas_required to false.
+
+    This command produces no output.
+
+.EXAMPLE
+    PS> Set-VaultKVEngine -Engine test-kv -CheckAndSetRequired:$true
+
+    Sets cas_required to true, and sets the max_versions to the default value of 10.
+
+    This command produces no output.
+#>
     [CmdletBinding()]
     param(
+        #Specifies a KV Engine to modify the properties of.
         [String] $Engine,
 
-        [Int] $MaxVersions,
+        #Specifies the max_versions a KV engine should be configured to accept.
+        [Int] $MaxVersions = 10,
 
+        #Specifies, as a boolean, whether or not cas_required should be configured on the KV engine.
         [Alias('CASRequired')]
-        [Switch] $CheckAndSetRequired,
-
-        [ValidateSet('Json','PSObject')]
-        [String] $OutputType = 'PSObject',
-
-        [Switch] $JustData
+        [Bool] $CheckAndSetRequired
     )
 
     begin {
@@ -43,30 +64,10 @@ function Set-VaultKVEngine {
         }
 
         try {
-            $result = Invoke-RestMethod @irmParams
+            Invoke-RestMethod @irmParams
         }
         catch {
             throw
-        }
-
-        switch ($OutputType) {
-            'Json' {
-                if ($JustData) {
-                    $result.data | ConvertTo-Json
-                }
-                else {
-                    $result | ConvertTo-Json
-                }
-            }
-
-            'PSObject' {
-                if ($JustData) {
-                    $result.data
-                }
-                else {
-                    $result
-                }
-            }
         }
     }
 
