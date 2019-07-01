@@ -45,15 +45,15 @@ The following verb mappings and command alises might actually make a person who 
 Before you can run most commands, you need to set some global variables:
 
 ```
-$cred = Get-Credential 
+PS> $cred = Get-Credential 
 
-Set-VaultSessionVariable -VaultURL https://hvault.devcorp.wayfair.com -Credential $cred -LoginMethod LDAP
+PS> Set-VaultSessionVariable -VaultURL https://hvault.devcorp.wayfair.com -Credential $cred -LoginMethod LDAP
 ```
 
-You can see all of the variables that get set when you execute this command by running:
+You can see all of the Vault-specific variables that are set by executing:
 
 ```
-Get-VaultSessionVariable
+PS> Get-VaultSessionVariable
 
 Name                           Value
 ----                           -----
@@ -64,12 +64,14 @@ VAULT_LOGIN_METHOD             LDAP
 VAULT_NODES                    {devbo1chvault02.devcorp.wayfair.com, devbo1chvault01.devcorp.wayfair.com}
 ```
 
+NOTE: to prevent a `VAULT_TOKEN` from being written to a PSTranscript, PSTranscripting is turned off, if it was previously on.
+
 ### Getting the Status of Vault
 
 With `VAULT_ADDR` defined, we can now poll the status of Vault:
 
 ```
-Get-VaultStatus
+PS> Get-VaultStatus
 
 seal_type       : shamir
 initialized     : True
@@ -91,14 +93,14 @@ Beyond that, we can't do much else though, because we need a `VAULT_TOKEN` to pe
 The next pair of commands to execute, to complete to "setup" process is:
 
 ```
-Get-VaultToken | Set-VaultToken
+PS> Get-VaultToken | Set-VaultToken
 ```
 
 Doing so will create another global variable `VAULT_TOKEN`, which will be used to authenticate you to Hashicorp Vault instance defined in `VAULT_ADDR`.
 
 You are now "authenticated" to Vault. From here, you can:
 * Create/Read KV secrets your token has access to. 
-* Read/Update KV secret engine
+* Read/Update KV secret engine.
 * Wrap, unwrap and/or rewrap data, as well as lookup wrapped data information.
 * Generate random byte information in Base64 or Hex formats.
 * Generate SHA2 hashes for Base64 or Hex-encoded information.
@@ -111,7 +113,7 @@ If your token has administrative capabilities, you can seal vault, or tell the a
 ### Getting a KV Secret
 
 ```
-Get-VaultKVSecret -Engine dsc -SecretsPath sql_ag/conf_ag -OutputType PSObject -JustData
+PS> Get-VaultKVSecret -Engine dsc -SecretsPath sql_ag/conf_ag -OutputType PSObject -JustData
 
 foo
 ---
@@ -121,7 +123,7 @@ bar
 ### Wrapping KV Information
 
 ```
-New-VaultWrapping -WrapData @{'zip'='zap'} -WrapTTL 5h -OutputType PSObject
+PS> New-VaultWrapping -WrapData @{'zip'='zap'} -WrapTTL 5h -OutputType PSObject
 
 request_id     :
 lease_id       :
@@ -139,7 +141,7 @@ auth           :
 Using the token from the example above, show information about the wrapped data (but not the data itself):
 
 ```
-Show-VaultWrapping -Token s.6z8pEEAxFqaQ91HiVcWNMmVC
+PS> Show-VaultWrapping -Token s.6z8pEEAxFqaQ91HiVcWNMmVC
 
 request_id     : 7d990020-0615-c293-548a-fb810ee63b16
 lease_id       :
@@ -156,7 +158,7 @@ auth           :
 Using the same token from the two examples above, retrieve wrapped data:
 
 ```
-Get-VaultWrapping -Token s.6z8pEEAxFqaQ91HiVcWNMmVC -OutputType Json
+PS> Get-VaultWrapping -Token s.6z8pEEAxFqaQ91HiVcWNMmVC -OutputType Json
 {
     "request_id":  "e5732ad5-e15f-0b45-9324-5ad6fe0fa705",
     "lease_id":  "",
@@ -176,7 +178,7 @@ NOTE: Wrapped data can only be retrieved once. If the same command were to be ex
 ### Generate Random Bytes In Hex
 
 ```
-Get-VaultRandomBytes -Bytes 64 -Format Hex -OutputType PSObject -JustData
+PS> Get-VaultRandomBytes -Bytes 64 -Format Hex -OutputType PSObject -JustData
 
 random_bytes
 ------------
@@ -188,7 +190,7 @@ random_bytes
 ### Protect (Seal) Vault
 
 ```
-Protect-Vault
+PS> Protect-Vault
 
 Sealed Active Vault Node: https://DEVBO1CHVAULT01.devcorp.wayfair.com:443
 ```
@@ -198,7 +200,7 @@ This command does not require any parameters. When executed, the active Vault no
 ### Unprotect (Unseal) Vault
 
 ```
-Unprotect-Vault -VaultNode devbo1chvault02.devcorp.wayfair.com
+PS> Unprotect-Vault -VaultNode devbo1chvault02.devcorp.wayfair.com
 Please provide a single Unseal Key: ********************************************
 
 type          : shamir
@@ -222,7 +224,7 @@ Finally, this command must be executed X times (with different unseal keys), whe
 ### Revoke the Active Vault Leader (Stepdown)
 
 ```
-Revoke-VaultLeader
+PS> Revoke-VaultLeader
 
 Initiated Step-Down on Active Node: https://DEVBO1CHVAULT02.devcorp.wayfair.com:443
 ```
