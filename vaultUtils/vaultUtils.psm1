@@ -37,4 +37,6 @@ Export-ModuleMember `
         'Wrap-VaultWrapping'
         'Lookup-VaultWrapping'
         'Rewrap-VaultWrapping'
+
+        'Renew-Token'
     )

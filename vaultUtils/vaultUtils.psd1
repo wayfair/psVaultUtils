@@ -79,8 +79,16 @@
         'Unprotect-Vault'
         'Revoke-VaultLeader'
 
+        'Get-VaultLoginToken'
+        'Set-VaultLoginToken'
+
+        'New-VaultToken'
         'Get-VaultToken'
-        'Set-VaultToken'
+        'Update-VaultToken'
+        'Revoke-VaultToken'
+
+        'Get-VaultTokenAccessor'
+        'Revoke-VaultTokenAccessor'
         
         'Get-VaultRandomBytes'
         'Get-VaultDataHash'
