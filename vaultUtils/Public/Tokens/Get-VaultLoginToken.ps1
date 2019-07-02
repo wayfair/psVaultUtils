@@ -61,7 +61,7 @@ function Get-VaultLoginToken {
     process {
         $LoginMethod = $global:VAULT_LOGIN_METHOD
         $Credential  = $global:VAULT_CRED
-        $vaultAddr   = $global:VAULT_ADDR
+        $uri         = $global:VAULT_ADDR
 
         if ($Credential) {
             $jsonPayload = @"
@@ -77,11 +77,8 @@ function Get-VaultLoginToken {
                 $vaultUsername = $Credential.Username
             }
 
-            write-verbose "$vaultUsername"
-            Write-Verbose "$($Credential.Username)"
-
             $irmParams = @{
-                Uri    = "$vaultAddr/v1/auth/$($LoginMethod.ToLower())/login/$vaultUsername"
+                Uri    = "$uri/v1/auth/$($LoginMethod.ToLower())/login/$vaultUsername"
                 Body   = $($jsonPayload | ConvertFrom-Json | ConvertTo-Json -Compress)
                 Method = 'Post'
             }
