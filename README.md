@@ -108,7 +108,7 @@ You are now "authenticated" to Vault. From here, you can:
 If your token has administrative capabilities, you can seal vault, or tell the active node to step down. 
 
 
-## Other Code Samples
+## Interacting with Engines & Secrets
 
 ### Getting a KV Secret
 
@@ -119,6 +119,162 @@ foo
 ---
 bar
 ```
+
+### Getting Information about a KV Engine
+
+```
+PS> Get-VaultKVEngine -Engine dsc
+
+
+request_id     : 3aea0b51-2f58-3aae-07b8-76da6164e91b
+lease_id       :
+renewable      : False
+lease_duration : 0
+data           : @{cas_required=False; max_versions=0}
+wrap_info      :
+warnings       :
+auth           :
+```
+
+### Creating a Secret in a KV Engine
+
+```
+PS> New-VaultKVSecret -Engine test-kv -SecretsPath foo/bar -Secrets @{'foo'='bar'}
+
+
+request_id     : 483a1675-fc72-f32e-f5db-6d8e8f585488
+lease_id       :
+renewable      : False
+lease_duration : 0
+data           : @{created_time=2019-07-02T20:50:04.8770458Z; deletion_time=; destroyed=False; version=1}
+wrap_info      :
+warnings       :
+auth           :
+```
+
+### Getting a Secret's Metadata
+
+```
+PS> Get-VaultKVSecret -Engine test-kv -SecretsPath foo/bar -MetaData -OutputType Json
+{
+    "request_id":  "5825a510-63c0-bcb2-fa37-c8f9adaacbb6",
+    "lease_id":  "",
+    "renewable":  false,
+    "lease_duration":  0,
+    "data":  {
+                 "cas_required":  false,
+                 "created_time":  "2019-07-02T20:50:04.8770458Z",
+                 "current_version":  1,
+                 "max_versions":  0,
+                 "oldest_version":  0,
+                 "updated_time":  "2019-07-02T20:50:04.8770458Z",
+                 "versions":  {
+                                  "1":  "@{created_time=2019-07-02T20:50:04.8770458Z; deletion_time=; destroyed=False}"
+                              }
+             },
+    "wrap_info":  null,
+    "warnings":  null,
+    "auth":  null
+}
+```
+
+## Interacting with Tokens & Accessors
+
+### Creating a New Token
+
+```
+PS> New-VaultToken
+
+request_id     : 509ad951-ad19-de93-01ad-2c9864a0d2b8
+lease_id       :
+renewable      : False
+lease_duration : 0
+data           :
+wrap_info      :
+warnings       :
+auth           : @{client_token=s.tOZMiBe0WkpZ4NeUCXKdrvVA; accessor=kQdhTOrp5IEJ3NlLuhP2lhKp; policies=System.Object[];
+                 token_policies=System.Object[]; identity_policies=System.Object[]; metadata=; lease_duration=129600;
+                 renewable=False; entity_id=357f788d-75cf-c16d-f6d9-cdbd6c5deee8; token_type=service; orphan=False}
+```
+
+```
+PS> $newTokenParams = @{
+>>      RoleName = 'SomeRole'
+>>      Policies = 'jenkinsc02-secret-consumer'
+>>      MetaData = @{ 'user'='bsmall' }
+>>      Renewable = $true
+>>      TimeToLive = "48h"
+>>      DisplayName = "bsmall"
+>>      NumberOfUses = 10
+>>  }
+
+PS> New-VaultToken @newTokenParams
+
+request_id     : ec54b2f4-c538-d102-3273-6b7215cc2ba6
+lease_id       :
+renewable      : False
+lease_duration : 0
+data           :
+wrap_info      :
+warnings       :
+auth           : @{client_token=s.Ezg2ZSLaKcs8g3I32BQrBU3H; accessor=xa06uj4p0vaVMcpYrVHviw1Y; policies=System.Object[];
+                token_policies=System.Object[]; identity_policies=System.Object[]; metadata=; lease_duration=172800;
+                renewable=True; entity_id=357f788d-75cf-c16d-f6d9-cdbd6c5deee8; token_type=service; orphan=False}
+```
+
+### Updating the Lease/TTL of a Token
+
+```
+PS> Update-VaultToken -Token s.9xLfaE97zipyovfM9owMbqSl -Increment 200h
+
+request_id     : b21dde75-0f9f-14a3-c1d7-d3ceb1ad32c2
+lease_id       :
+renewable      : False
+lease_duration : 0
+data           :
+wrap_info      :
+warnings       :
+auth           : @{client_token=s.9xLfaE97zipyovfM9owMbqSl; accessor=nGxVOLVniYtviucozXPZCF0B; policies=System.Object[];
+                 token_policies=System.Object[]; metadata=; lease_duration=720000; renewable=True;
+                 entity_id=357f788d-75cf-c16d-f6d9-cdbd6c5deee8; token_type=service; orphan=False}
+```
+
+### Revoking a Token
+
+```
+PS> Get-VaultToken -Token s.9xLfaE97zipyovfM9owMbqSl | Revoke-VaultToken
+
+Confirm
+Are you sure you want to perform this action?
+Performing the operation "Revoke Vault token" on target "s.9xLfaE97zipyovfM9owMbqSl".
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "Y"): y
+```
+
+### Viewing & Revoking Token Accessors
+
+```
+PS> Get-VaultTokenAccessor -Accessor mqzm7rTDXZIeZnF357znsZdZ
+
+
+request_id     : dc3b1ac0-a253-d4da-16b0-c7aae18351a2
+lease_id       :
+renewable      : False
+lease_duration : 0
+data           : @{accessor=mqzm7rTDXZIeZnF357znsZdZ; creation_time=1562101179; creation_ttl=172800;
+                 display_name=token-bsmall; entity_id=357f788d-75cf-c16d-f6d9-cdbd6c5deee8;
+                 expire_time=2019-07-04T16:59:39.5071214-04:00; explicit_max_ttl=0; external_namespace_policies=; id=;
+                 identity_policies=System.Object[]; issue_time=2019-07-02T16:59:39.5071214-04:00; meta=; num_uses=10;
+                 orphan=False; path=auth/token/create; policies=System.Object[]; renewable=True; ttl=172782; type=service}
+wrap_info      :
+warnings       :
+auth           :
+```
+
+```
+Get-VaultTokenAccessor -Accessor mqzm7rTDXZIeZnF357znsZdZ | Revoke-VaultTokenAccessor -Confirm:$false
+```
+
+## Interacting with Vault Tools
 
 ### Wrapping KV Information
 

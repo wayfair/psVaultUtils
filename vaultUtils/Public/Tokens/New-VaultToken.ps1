@@ -72,7 +72,7 @@ function New-VaultToken {
     warnings       :
     auth           : @{client_token=s.Ezg2ZSLaKcs8g3I32BQrBU3H; accessor=xa06uj4p0vaVMcpYrVHviw1Y; policies=System.Object[];
                     token_policies=System.Object[]; identity_policies=System.Object[]; metadata=; lease_duration=172800;
-                    renewable=True; entity_id=357f788d-75cf-c16d-f6d9-cdbd6c5deee8; token_type=service; orphan=False}\
+                    renewable=True; entity_id=357f788d-75cf-c16d-f6d9-cdbd6c5deee8; token_type=service; orphan=False}
 
     * This token utilizes a subset of the parent token's policies.
     * Metadata, which can be found in the audit logs, is associated with the token's actions.
