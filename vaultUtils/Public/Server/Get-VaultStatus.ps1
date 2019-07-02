@@ -41,6 +41,9 @@ function Get-VaultStatus {
     [CmdletBinding()]
     param(
         #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        [Parameter(
+            Position = 0
+        )]
         [ValidateSet('Json','PSObject')]
         [String] $OutputType = 'PSObject'
     )

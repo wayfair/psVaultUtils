@@ -45,19 +45,22 @@ function Revoke-VaultToken {
     param(
         #Specifies a token to revoke.
         [Parameter(
-            ParameterSetName = 'byToken'
+            ParameterSetName = 'byToken',
+            Position = 0
         )]
         [String] $Token,
 
         #Specifies that the token revoked should be the token defined in VAULT_TOKEN.
         [Parameter(
-            ParameterSetName = 'bySelf'
+            ParameterSetName = 'bySelf',
+            Position = 1
         )]
         [Switch] $Self,
 
         #Specifies that the given token should be revoked, and any child tokens spawned by the given token should be orphaned.
         [Parameter(
-            ParameterSetName = 'byToken'
+            ParameterSetName = 'byToken',
+            Position = 2
         )]
         [Switch] $OrphanChildren
     )

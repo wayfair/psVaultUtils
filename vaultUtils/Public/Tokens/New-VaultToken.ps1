@@ -117,56 +117,101 @@ function New-VaultToken {
     [CmdletBinding()]
     param(
         #Specifies the ID of the client token. This parameter can only be specified if VAULT_TOKEN is a root token; It will otherwise be ignored.
+        [Parameter(
+            Position = 0
+        )]
         [String] $TokenID,
 
         #Specifies the name of the token role.
+        [Parameter(
+            Position = 1
+        )]
         [String] $RoleName,
 
         #Specifies a list of policies for the token. The specified policies must be a subset of the policies belonging to the token making the request, unlessroot.
         #If not specified, the generated token will have all of the capabilities of the calling token.
+        [Parameter(
+            Position = 2
+        )]
         [String[]] $Policies,
 
         #Specifies a map of string to string valued metadata. This data is passed through to audit devices.
+        [Parameter(
+            Position = 3
+        )]
         [Hashtable] $Metadata,
 
         #Specifies whether or not the token will have a parent. A token must have a parent unless it is called from a root token, and NoParent is true.
+        [Parameter(
+            Position = 4
+        )]
         [Switch] $NoParent,
 
         #Specifies that the 'default' policy should not be included in the token's policy set.
+        [Parameter(
+            Position = 5
+        )]
         [Switch] $NoDefaultPolicy,
 
         #Specifies the ability to enable or disable whether or not a token can be renewed past its initial TimeToLive. 
-        #A renewable token can be renewed up to the system/mount maximum TimeToLive
+        #A renewable token can be renewed up to the system/mount maximum TimeToLive.
+        [Parameter(
+            Position = 6
+        )]
         [Bool] $Renewable,
 
         #Specifies the TimeToLive period of the token, provided as "1h" where hour is the largest suffix. 
         #If not provided, the token is valid for the deault lease TimeToLive, or indefinitely if the root policy is used.
+        [Parameter(
+            Position = 7
+        )]
         [Alias('TTL')]
         [String] $TimeToLive,
 
         #Specifies that a token will have a max TimeToLive set on it. A token with a configured Max TimeToLive cannot be renewed past the specified value.
+        [Parameter(
+            Position = 8
+        )]
         [Alias('ExplicitMaxTTL')]
         [String] $ExplicitMaxTimeToLive,
 
         #Specifies a display name or friendly name for a token.
+        [Parameter(
+            Position = 9
+        )]
         [String] $DisplayName,
 
-        #Specifies the number of uses a token has. Defaults to 0, meaning a token has no limit on the number of uses. 
+        #Specifies the number of uses a token has. Defaults to 0, meaning a token has no limit on the number of uses.
+        [Parameter(
+            Position = 10
+        )] 
         [Alias('NumUses')]
         [Int] $NumberOfUses = 0,
 
         #Specifies that the token will be periodic.; it will have no max TimeToLive (unless Explicit Max TimeToLive is specified), but every renewal will use the given period.
         #This parameter requires a root/sudo token to use.
+        [Parameter(
+            Position = 11
+        )]
         [String] $Period,
 
         #Specifies that the created token should be an orphan (not be the child of a parent token).
+        [Parameter(
+            Position = 12
+        )]
         [Switch] $Orphan,
 
         #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        [Parameter(
+            Position = 13
+        )]
         [ValidateSet('Json','PSObject')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the auth data should be displayed in the console.
+        [Parameter(
+            Position = 14
+        )]
         [Switch] $JustAuth
     )
 

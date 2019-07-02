@@ -25,12 +25,21 @@ function Set-VaultKVEngine {
     [CmdletBinding()]
     param(
         #Specifies a KV Engine to modify the properties of.
+        [Parameter(
+            Position = 0
+        )]
         [String] $Engine,
 
         #Specifies the max_versions a KV engine should be configured to accept.
+        [Parameter(
+            Position = 1
+        )]
         [Int] $MaxVersions = 10,
 
         #Specifies, as a boolean, whether or not cas_required should be configured on the KV engine.
+        [Parameter(
+            Position = 2
+        )]
         [Alias('CASRequired')]
         [Bool] $CheckAndSetRequired
     )

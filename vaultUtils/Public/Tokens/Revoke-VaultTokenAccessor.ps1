@@ -28,6 +28,9 @@ function Revoke-VaultTokenAccessor {
     )]
     param(
         #Specifies a token accessor to revoke.
+        [Parameter(
+            Position = 0
+        )]
         [String] $Accessor
     )
 

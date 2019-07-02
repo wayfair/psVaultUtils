@@ -26,11 +26,15 @@ function Set-VaultLoginToken {
         #Specifies a vault token to assign to VAULT_TOKEN.
         [Parameter(
             ValueFromPipeline = $true,
-            Mandatory = $true
+            Mandatory = $true,
+            Position = 0
         )]
         $Token,
 
         #Specifies that the resulting VAULT_TOKEN variable should be displayed in the console.
+        [Parameter(
+            Position = 1
+        )]
         [Switch] $Passthru
     )
 

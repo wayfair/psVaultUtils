@@ -2,6 +2,9 @@ function Test-VaultSessionVariable {
     [CmdletBinding()]
     param(
         #Specifies one or more VAULT_ variables to 'CheckFor', to confirm it is populated.
+        [Parameter(
+            Position = 0
+        )]
         [ValidateSet('Cred','LoginMethod','Address','Token','Nodes','RootToken')]
         [String[]] $CheckFor
     )

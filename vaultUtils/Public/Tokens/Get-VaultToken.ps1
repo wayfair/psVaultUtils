@@ -81,21 +81,29 @@ function Get-VaultToken {
     param(
         #Specifies a token to retrieve information about.
         [Parameter(
-            ParameterSetName = 'byToken'
+            ParameterSetName = 'byToken',
+            Position = 0
         )]
         [String] $Token,
 
         #Specifies that the token received should be token defined in VAULT_TOKEN.
         [Parameter(
-            ParameterSetName = 'bySelf'
+            ParameterSetName = 'bySelf',
+            Position = 1
         )]
         [Switch] $Self,
 
         #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        [Parameter(
+            Position = 2
+        )]
         [ValidateSet('Json','PSObject')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the token should be displayed in the console.
+        [Parameter(
+            Position = 3
+        )]
         [Switch] $JustData
     )
 

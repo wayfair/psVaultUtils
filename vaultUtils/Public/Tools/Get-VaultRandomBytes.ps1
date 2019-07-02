@@ -39,17 +39,29 @@ function Get-VaultRandomBytes {
     [CmdletBinding()]
     param(
         #Specifies the number of bytes of data to generate.
+        [Parameter(
+            Position = 0
+        )]
         [Int] $Bytes,
 
         #Specifies the format the bytes should be returned in. Either Base64 or Hex.
+        [Parameter(
+            Position = 1
+        )]
         [ValidateSet('Base64','Hex')]
         [String] $Format = 'Base64',
 
         #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        [Parameter(
+            Position = 2
+        )]
         [ValidateSet('Json','PSObject')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the data should be displayed in the console.
+        [Parameter(
+            Position = 3
+        )]
         [Switch] $JustData
     )
 

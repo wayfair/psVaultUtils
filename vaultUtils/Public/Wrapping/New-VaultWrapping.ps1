@@ -38,20 +38,32 @@ function New-VaultWrapping {
     [CmdletBinding()]
     param(
         #Specifies one or more key-values pairs of data to wrap.
+        [Parameter(
+            Position = 0
+        )]
         [Hashtable] $WrapData,
 
         #Specifies a time-to-live value the wrapped data is valid for.
         #TTL is a string and can be expressed as a number of seconds, minutes or hours, formatted as: '60' OR '60s' OR '60m' OR '60h'.
         #The default TTL is '24h' or 24 hours.
+        [Parameter(
+            Position = 1
+        )]
         [Alias('TTL')]
         [ValidateScript({ $_ -match "^\d+$|^\d+[smh]$" })]
         [String] $WrapTTL = "24h",
 
         #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        [Parameter(
+            Position = 2
+        )]
         [ValidateSet('Json','PSObject')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the data should be displayed in the console.
+        [Parameter(
+            Position = 3
+        )]
         [Switch] $JustData
     )
 

@@ -71,11 +71,15 @@ DYNAMIC PARAMETERS
     param(
         #Specifies the hostname of a sealed node. Use when $VAULT_NODES is not poplated and one or all vault nodes are sealed.
         [Parameter(
-            ParameterSetName='Override'   
+            ParameterSetName = 'Override',
+            Position = 1   
         )]
         [String] $VaultNodeOverride,
 
         #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        [Parameter(
+            Position = 2
+        )]
         [ValidateSet('Json','PSObject')]
         [String] $OutputType = 'PSObject'
     )
@@ -96,7 +100,7 @@ DYNAMIC PARAMETERS
         $ParameterAttribute = New-Object System.Management.Automation.ParameterAttribute
         $ParameterAttribute.ParameterSetName = 'Regular'
         $ParameterAttribute.Mandatory = $true
-        $ParameterAttribute.Position = 1
+        $ParameterAttribute.Position = 0
 
         # Add the attributes to the attributes collection
         $AttributeCollection.Add($ParameterAttribute)

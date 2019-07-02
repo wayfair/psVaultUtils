@@ -21,13 +21,22 @@ function Get-VaultWrapping {
     [CmdletBinding()]
     param(
         #Specifies a token that can unwrap wrapped data.
+        [Parameter(
+            Position = 0
+        )]
         [String] $Token,
 
         #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        [Parameter(
+            Position = 1
+        )]
         [ValidateSet('Json','PSObject')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the data should be displayed in the console.
+        [Parameter(
+            Position = 2
+        )]
         [Switch] $JustData
     )
 

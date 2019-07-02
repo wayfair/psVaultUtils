@@ -42,21 +42,29 @@ function Set-VaultSessionVariable {
     param(
         #Specifies a full URL to access Vault. Accepts a consul URL.
         [Parameter(
-            Mandatory = $true
+            Mandatory = $true,
+            Position = 0
         )]
         [String] $VaultURL,
 
-        #Specifies a credential used to authenticate to Vault. An LDAP credential can be specified as either "DOMAIN\Username" or "Username". 
+        #Specifies a credential used to authenticate to Vault. An LDAP credential can be specified as either "DOMAIN\Username" or "Username".
+        [Parameter(
+            Position = 1
+        )] 
         [PSCredential] $Credential,
 
         #Specifies a login method used to authenticate to Vault.
         [Parameter(
-            Mandatory = $true
+            Mandatory = $true,
+            Position = 2
         )]
         [ValidateSet('LDAP','Userpass')]
         [String] $LoginMethod,
 
         #Specifies that the resulting VAULT_ variables should be displayed in the console.
+        [Parameter(
+            Position = 3
+        )]
         [Switch] $Passthru
     )
 

@@ -62,27 +62,38 @@ function Update-VaultToken {
     param(
         #Specifies a token whose lease should be updated.
         [Parameter(
-            ParameterSetName = 'byToken'
+            ParameterSetName = 'byToken',
+            Position = 0
 
         )]
         [String] $Token,
 
         #Specifies that the token whose lease should be updated is defined in VAULT_TOKEN.
         [Parameter(
-            ParameterSetName = 'bySelf'
+            ParameterSetName = 'bySelf',
+            Position = 1
         )]
         [Switch] $Self,
 
         #Specifies how much the lease/ttl should be updated by.
         #Increment is a string and can be expressed as a number of seconds, minutes or hours, formatted as: '60' OR '60s' OR '60m' OR '60h'.
+        [Parameter(
+            Position = 2
+        )]
         [ValidateScript({ $_ -match "^\d+$|^\d+[smh]$" })]
         [String] $Increment,
 
         #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        [Parameter(
+            Position = 3
+        )]
         [ValidateSet('Json','PSObject')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the authentication information should be displayed in the console.
+        [Parameter(
+            Position = 4
+        )]
         [Switch] $JustAuth
     )
 

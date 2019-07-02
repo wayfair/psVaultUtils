@@ -30,13 +30,22 @@ function Get-VaultKVEngine {
     [CmdletBinding()]
     param(
         #Specifies a KV Engine to return information about.
+        [Parameter(
+            Position = 0
+        )]
         [String] $Engine,
 
         #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        [Parameter(
+            Position = 1
+        )]
         [ValidateSet('Json','PSObject')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the data should be displayed in the console.
+        [Parameter(
+            Position = 2
+        )]
         [Switch] $JustData
     )
 

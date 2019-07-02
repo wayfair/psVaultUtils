@@ -61,19 +61,34 @@ function Get-VaultKVSecret {
     [CmdletBinding()]
     param(
         #Specifies a KV engine to retrieve secrets from.
+        [Parameter(
+            Position = 0
+        )]
         [String] $Engine,
 
         #Specifies the secrets path to retrieve secrets from.
+        [Parameter(
+            Position = 1
+        )]
         [String] $SecretsPath,
 
         #Specifies that metadata about the secret should be retrieved instead of the actual secret.
+        [Parameter(
+            Position = 2
+        )]
         [Switch] $MetaData,
 
         #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        [Parameter(
+            Position = 3
+        )]
         [ValidateSet('Json','PSObject')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the data should be displayed in the console.
+        [Parameter(
+            Position = 4
+        )]
         [Switch] $JustData
     )
 

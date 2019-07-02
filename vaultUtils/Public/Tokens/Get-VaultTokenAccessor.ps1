@@ -62,13 +62,22 @@ function Get-VaultTokenAccessor {
     [CmdletBinding()]
     param(
         #Specifies a token accessor to retrieve information about.
+        [Parameter(
+            Position = 0
+        )]
         [String] $Accessor,
 
         #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        [Parameter(
+            Position = 1
+        )]
         [ValidateSet('Json','PSObject')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the token should be displayed in the console.
+        [Parameter(
+            Position = 2
+        )]
         [Switch] $JustData
     )
 

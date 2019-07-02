@@ -29,7 +29,8 @@ function Clear-VaultSessionVariable {
     [CmdletBinding()]
     param(
         [Parameter(
-            ValueFromPipeline = $true
+            ValueFromPipeline = $true,
+            Position = 0
         )]
         $Variables
     )

@@ -57,23 +57,41 @@ function New-VaultKVSecret {
     [CmdletBinding()]
     param(
         #Specifies a KV engine to write secrets to.
+        [Parameter(
+            Position = 0
+        )]
         [String] $Engine,
 
         #Specifies the secrets path to write a secret to.
+        [Parameter(
+            Position = 1
+        )]
         [String] $SecretsPath,
 
-        #Specifies a hashtable of one or more KV pairs, of which the values are "secrets"
+        #Specifies a hashtable of one or more KV pairs, of which the values are "secrets".
+        [Parameter(
+            Position = 2
+        )]
         [Hashtable] $Secrets,
 
         #Specifies the CheckAndSet (CAS) version the secret should be written to. This generally needs to be incremented when updating a secret.
+        [Parameter(
+            Position = 3
+        )]
         [ValidateScript({ $_ -gt 0 })]
         [Int] $CheckAndSet,
 
         #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        [Parameter(
+            Position = 4
+        )]
         [ValidateSet('Json','PSObject')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the data should be displayed in the console.
+        [Parameter(
+            Position = 5
+        )]
         [Switch] $JustData
     )
 

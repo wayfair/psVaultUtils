@@ -28,22 +28,37 @@ function Get-VaultDataHash {
     [CmdletBinding()]
     param(
         #Specifies a SHA2 Algorithm (Sha2-224, Sha2-256, Sha2-384, Sha2-512) to use to generate a cryptographic hash.
+        [Parameter(
+            Position = 0
+        )]
         [ValidateSet('Sha2-224','Sha2-256','Sha2-384','Sha2-512')]
         [String]$Algorithm,
 
         #Specifies a Base64 encoded string to generate a hash for.
+        [Parameter(
+            Position = 1
+        )]
         [ValidateScript({ $_ -match "^[a-zA-Z0-9\+/]*={0,2}$" })]
         [String] $InputObject,
 
         #Specifies the output of the cryptographic hash, in either Base64 or Hex.
+        [Parameter(
+            Position = 2
+        )]
         [ValidateSet('Base64','Hex')]
         [String] $Format = 'Base64',
 
         #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        [Parameter(
+            Position = 3
+        )]
         [ValidateSet('Json','PSObject')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the data should be displayed in the console.
+        [Parameter(
+            Position = 4
+        )]
         [Switch] $JustData
     )
 
