@@ -43,51 +43,7 @@ function Set-VaultLoginToken {
     }
 
     process {
-        if ($Token -is [String]) {
-            #Token is either String or Json-string
-
-            try {
-                $convertedToken = $Token | ConvertFrom-Json -ErrorAction Stop
-
-                if ($convertedToken.auth.client_token) {
-                    $iToken = $convertedToken.auth.client_token
-                }
-                elseif ($convertedToken.client_token) {
-                    $iToken = $convertedToken.client_token
-                }
-                else {
-                    #This is not the Json you are looking for...
-                    Write-Error "The specified JSON structure does not contain a property '.auth.client_token' or '.client_token'"
-                    return
-                }
-            }
-            catch {
-                if ($Token -match "^s\..{24}$") {
-                    $iToken = $Token
-                }
-                else {
-                    Write-Error "The specified string is malformed or otherwise could not be parsed as a token."
-                    return
-                }
-                
-            }
-        }
-        else {
-            #Token is PSObject
-
-            if ($Token.auth.client_token) {
-                $iToken = $Token.auth.client_token
-            }
-            elseif ($Token.client_token) {
-                $iToken = $Token.client_token
-            }
-            else {
-                #This is not the PSObject you are looking for....
-                Write-Error "The specified PSObject structure does not contain a property '.auth.client_token' or '.client_token'"
-            }
-        }
-
-        $global:VAULT_TOKEN = $iToken
+        $global:VAULT_TOKEN = $Token | Find-VaultToken
 
         if ($Passthru) {
             Get-Variable -Name 'VAULT_TOKEN'

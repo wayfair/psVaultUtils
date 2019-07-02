@@ -63,9 +63,10 @@ function Get-VaultTokenAccessor {
     param(
         #Specifies a token accessor to retrieve information about.
         [Parameter(
+            ValueFromPipeline = $true,
             Position = 0
         )]
-        [String] $Accessor,
+        $Accessor,
 
         #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
         [Parameter(
@@ -90,7 +91,7 @@ function Get-VaultTokenAccessor {
 
         $jsonPayload = @"
 {
-    "accessor": "$Accessor"
+    "accessor": "$($Accessor | Find-VaultTokenAccessor)"
 }
 "@
 

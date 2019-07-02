@@ -29,9 +29,10 @@ function Revoke-VaultTokenAccessor {
     param(
         #Specifies a token accessor to revoke.
         [Parameter(
+            ValueFromPipeline = $true,
             Position = 0
         )]
-        [String] $Accessor
+        $Accessor
     )
 
     begin {
@@ -41,9 +42,11 @@ function Revoke-VaultTokenAccessor {
     process {
         $uri = $global:VAULT_ADDR
 
+        $acc = $($Accessor | Find-VaultTokenAccessor)
+
         $jsonPayload = @"
 {
-    "accessor": "$Accessor"
+    "accessor": "$acc"
 }
 "@
 
@@ -54,7 +57,7 @@ function Revoke-VaultTokenAccessor {
             Method = 'Post'
         }
 
-        if ($PSCmdlet.ShouldProcess("$Accessor",'Revoke Vault token accessor')) {
+        if ($PSCmdlet.ShouldProcess("$acc",'Revoke Vault token accessor')) {
             try {
                 Invoke-RestMethod @irmParams
             }

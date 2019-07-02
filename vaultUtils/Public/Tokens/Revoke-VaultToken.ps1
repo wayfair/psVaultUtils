@@ -46,9 +46,10 @@ function Revoke-VaultToken {
         #Specifies a token to revoke.
         [Parameter(
             ParameterSetName = 'byToken',
+            ValueFromPipeline = $true,
             Position = 0
         )]
-        [String] $Token,
+        $Token,
 
         #Specifies that the token revoked should be the token defined in VAULT_TOKEN.
         [Parameter(
@@ -79,7 +80,7 @@ function Revoke-VaultToken {
                 $method      = 'Post'
             }
             'byToken' {
-                $iToken      = $token
+                $iToken      = $($Token | Find-VaultToken)
 
                 if ($OrphanChildren) {
                     $fulluri = "$uri/v1/auth/token/revoke-orphan"

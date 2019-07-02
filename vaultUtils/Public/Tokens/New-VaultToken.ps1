@@ -188,7 +188,7 @@ function New-VaultToken {
         [Alias('NumUses')]
         [Int] $NumberOfUses = 0,
 
-        #Specifies that the token will be periodic.; it will have no max TimeToLive (unless Explicit Max TimeToLive is specified), but every renewal will use the given period.
+        #Specifies that the token will be periodic; It will have no max TimeToLive (unless Explicit Max TimeToLive is specified), but every renewal will use the given period.
         #This parameter requires a root/sudo token to use.
         [Parameter(
             Position = 11

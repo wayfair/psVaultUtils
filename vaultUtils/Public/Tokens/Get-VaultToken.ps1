@@ -82,9 +82,10 @@ function Get-VaultToken {
         #Specifies a token to retrieve information about.
         [Parameter(
             ParameterSetName = 'byToken',
+            ValueFromPipeline = $true,
             Position = 0
         )]
-        [String] $Token,
+        $Token,
 
         #Specifies that the token received should be token defined in VAULT_TOKEN.
         [Parameter(
@@ -121,7 +122,7 @@ function Get-VaultToken {
                 $method      = 'Get'
             }
             'byToken' {
-                $iToken      = $token
+                $iToken      = $($Token | Find-VaultToken)
                 $fulluri     = "$uri/v1/auth/token/lookup"
                 $method      = 'Post'
                 $jsonPayload = @"

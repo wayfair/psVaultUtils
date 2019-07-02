@@ -8,13 +8,6 @@ function Update-VaultToken {
 
     A token's lease/ttl can only be renewed if the renewable flag is true on the token.
 
-.EXAMPLE
-    PS> Update-VaultToken -Self
-
-    This example demonstrates extending the calling token (VAULT_TOKEN) lease/ttl by 48 hours.
-
-    This command does not produce any output.
-
 .EXAMPLE 
     PS> New-VaultToken -TimeToLive 5m -Renewable:$true -OutputType Json -JustAuth
     {
@@ -55,6 +48,17 @@ function Update-VaultToken {
 
     This example demonstates creating a new renewable token with a lease of 300 seconds, or 5 minutes, and then extending the lease to 1 hour (3600 seconds).
 
+.EXAMPLE
+    PS> Update-VaultToken -Self
+
+    Update-VaultToken : LDAP-based tokens cannot have their lease/ttl extended.
+    At line:1 char:1
+    + Update-VaultToken -Self
+    + ~~~~~~~~~~~~~~~~~~~~~~~
+        + CategoryInfo          : NotSpecified: (:) [Write-Error], WriteErrorException
+        + FullyQualifiedErrorId : Microsoft.PowerShell.Commands.WriteErrorException,Update-VaultToken
+
+    This example demonstrates that it is currently not possible to extend the lease/ttl of an LDAP-based token.
 #>
     [CmdletBinding(
         DefaultParameterSetName = 'bySelf'
@@ -62,11 +66,12 @@ function Update-VaultToken {
     param(
         #Specifies a token whose lease should be updated.
         [Parameter(
+            ValueFromPipeline = $true,
             ParameterSetName = 'byToken',
             Position = 0
 
         )]
-        [String] $Token,
+        $Token,
 
         #Specifies that the token whose lease should be updated is defined in VAULT_TOKEN.
         [Parameter(
@@ -105,8 +110,14 @@ function Update-VaultToken {
         $uri = $global:VAULT_ADDR
 
         switch ($PSCmdlet.ParameterSetName) {
-            'bySelf'  { $getToken = Get-VaultToken -Token $global:VAULT_TOKEN }
-            'byToken' { $getToken = Get-VaultToken -Token $Token              }
+            'bySelf'  { $getToken = Get-VaultToken -Token $global:VAULT_TOKEN          }
+            'byToken' { $getToken = Get-VaultToken -Token $($Token | Find-VaultToken)  }
+        }
+
+        #
+        if ($getToken.data.display_name -match "ldap") {
+            Write-Error "LDAP-based tokens cannot have their lease/ttl extended."
+            return
         }
 
         if ($getToken.data.renewable) {
@@ -120,11 +131,10 @@ function Update-VaultToken {
 "@
                     }
 
-                    $iToken      = $global:VAULT_TOKEN
                     $fulluri     = "$uri/v1/auth/token/renew-self"                
                 }
                 'byToken' {
-                    $iToken      = $token
+                    $iToken      = $($getToken | Find-VaultToken)
                     $fulluri     = "$uri/v1/auth/token/renew"
                     $jsonPayload = @"
 {
@@ -141,7 +151,7 @@ function Update-VaultToken {
             }
 
             if ($PSCmdlet.ParameterSetName -eq 'byToken') {
-                $irmParams += @{Body = $($jsonPayload | ConvertFrom-Json | ConvertTo-Json -Compress) }
+                $irmParams += @{ Body = $($jsonPayload | ConvertFrom-Json | ConvertTo-Json -Compress) }
             }
 
             try {
