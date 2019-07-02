@@ -2,7 +2,7 @@ function Test-VaultSessionVariable {
     [CmdletBinding()]
     param(
         #Specifies one or more VAULT_ variables to 'CheckFor', to confirm it is populated.
-        [ValidateSet('Cred','LoginMethod','Address','Token','Nodes')]
+        [ValidateSet('Cred','LoginMethod','Address','Token','Nodes','RootToken')]
         [String[]] $CheckFor
     )
 
@@ -13,6 +13,7 @@ function Test-VaultSessionVariable {
     process {
         $runSetVaultSessionVariable = $false
         $runGetSetVaultToken        = $false
+        $runGetVaultToken           = $false
 
         switch ($true) {
             ($CheckFor -contains 'Cred') {
@@ -44,6 +45,12 @@ function Test-VaultSessionVariable {
                     $runGetSetVaultToken = $true
                 }
             }
+
+            ($CheckFor -contains 'RootToken') {
+                if (-not $global:VAULT_ROOT_TOKEN_STATUS) {
+                    $runGetVaultToken = $true
+                }
+            }
         }
 
         if ($runSetVaultSessionVariable) {
@@ -52,6 +59,18 @@ function Test-VaultSessionVariable {
 
         if ($runGetSetVaultToken) {
             Get-VaultLoginToken -JustToken | Set-VaultLoginToken
+        }
+
+        if ($runGetVaultToken) {
+            $policies = Get-VaultToken -Token $global:VAULT_TOKEN -JustData | 
+                Select-Object -ExpandProperty 'policies'
+
+            if ($policies -contains "root") {
+                $global:VAULT_ROOT_TOKEN_STATUS = $true
+            }
+            else {
+                $global:VAULT_ROOT_TOKEN_STATUS = $false
+            }
         }
     }
 
