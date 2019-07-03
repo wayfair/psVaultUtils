@@ -65,7 +65,7 @@ function Get-VaultStatus {
             }
 
             if ($_.Exception -match "The remote name could not be resolved") {
-                Write-Warning "All Vault instances are sealed."
+                Write-Warning "Vault is sealed."
             }
         }
 

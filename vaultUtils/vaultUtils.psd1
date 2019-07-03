@@ -78,6 +78,7 @@
         'Protect-Vault'
         'Unprotect-Vault'
         'Revoke-VaultLeader'
+        'Test-VaultHealth'
 
         'Get-VaultLoginToken'
         'Set-VaultLoginToken'

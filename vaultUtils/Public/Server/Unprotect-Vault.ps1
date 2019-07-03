@@ -121,7 +121,9 @@ DYNAMIC PARAMETERS
     }
 
     begin {
-        Test-VaultSessionVariable -CheckFor 'Nodes','Token','Cred','LoginMethod'
+        if ($PSCmdlet.ParameterSetName -eq "Regular") {
+            Test-VaultSessionVariable -CheckFor 'Nodes','Token','Cred','LoginMethod'
+        }
 
         switch ($PSCmdlet.ParameterSetName) {
             'Regular' { $vaultNode = $PsBoundParameters['VaultNode'] }
