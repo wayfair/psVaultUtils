@@ -74,11 +74,21 @@
         'Set-VaultSessionVariable'
         'Clear-VaultSessionVariable'
 
+        'Get-VaultMetric'
         'Get-VaultStatus'
         'Protect-Vault'
         'Unprotect-Vault'
         'Revoke-VaultLeader'
         'Test-VaultHealth'
+
+        'Get-VaultKeyStatus'
+        'Get-VaultRekeyProgress'
+        'Get-VaultRekeyVerificationProgress'
+        'Start-VaultRekey'
+        'Stop-VaultRekey'
+        'Stop-VaultRekeyVerification'
+        'Submit-VaultRekey'
+        'Submit-VaultRekeyVerification'
 
         'Get-VaultLoginToken'
         'Set-VaultLoginToken'
@@ -91,6 +101,7 @@
         'Get-VaultTokenAccessor'
         'Revoke-VaultTokenAccessor'
         
+        'ConvertTo-Base64'
         'Get-VaultRandomBytes'
         'Get-VaultDataHash'
 

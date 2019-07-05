@@ -33,6 +33,9 @@ Export-ModuleMember `
 
         'Stepdown-VaultLeader'
 
+        'Cancel-VaultRekey'
+        'Cancel-VaultRekeyVerification'
+
         'Unwrap-VaultWrapping'
         'Wrap-VaultWrapping'
         'Lookup-VaultWrapping'
