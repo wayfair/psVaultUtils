@@ -54,11 +54,12 @@ function Set-VaultSessionVariable {
         [PSCredential] $Credential,
 
         #Specifies a login method used to authenticate to Vault.
+        #Currently the only supported login method is LDAP.
         [Parameter(
             Mandatory = $true,
             Position = 2
         )]
-        [ValidateSet('LDAP','Userpass')]
+        [ValidateSet('LDAP')]
         [String] $LoginMethod,
 
         #Specifies that the resulting VAULT_ variables should be displayed in the console.
@@ -83,7 +84,7 @@ function Set-VaultSessionVariable {
             Write-Verbose 'Cred specified'
         }
         elseif ((-not $Credential) -and (-not $global:VAULT_CRED)) {
-            [PSCredential] $Credential = Get-Credential
+            [PSCredential] $Credential = Get-Credential -Message "Please specify credentials to log into Hashicorp Vault:"
             $global:VAULT_CRED = $Credential
 
             Write-verbose "no cred and no global cred"

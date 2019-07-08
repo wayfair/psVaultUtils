@@ -37,6 +37,17 @@ The following verb mappings and command alises might actually make a person who 
 * Unprotect-Vault --> Unseal-Vault
 * Revoke-VaultLeader --> Stepdown-VaultLeader
 
+### Keys & Token Verbs & Command Aliases
+
+* Cancel --> Stop
+* Renew --> Update
+
+<br>
+
+* Stop-VaultRekey --> Cancel-VaultRekey
+* Stop-VaultRekeyVerification --> Cancel-VaultRekeyVerification
+* Stop-VaultRootTokenGeneration --> Cancel-VaultRootTokenGeneration
+* Update-VaultToken --> Renew-VaultToken
 
 ## Command Usage
 
