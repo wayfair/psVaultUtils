@@ -100,7 +100,14 @@
 
         'Get-VaultTokenAccessor'
         'Revoke-VaultTokenAccessor'
+
+        'Get-VaultRootTokenGenerationProgress'
+        'Start-VaultRootTokenGeneration'
+        'Stop-VaultRootTokenGeneration'
+        'Submit-VaultRootTokenGeneration'
+        'Unprotect-VaultRootToken'
         
+        'ConvertFrom-Base64'
         'ConvertTo-Base64'
         'Get-VaultRandomBytes'
         'Get-VaultDataHash'
@@ -130,10 +137,17 @@
 
         'Stepdown-VaultLeader'
 
+        'Cancel-VaultRekey'
+        'Cancel-VaultRekeyVerification'
+
+        'Cancel-VaultRootTokenGeneration'
+
         'Unwrap-VaultWrapping'
         'Wrap-VaultWrapping'
         'Lookup-VaultWrapping'
         'Rewrap-VaultWrapping'
+
+        'Renew-VaultToken'
     )
     
     # DSC resources to export from this module

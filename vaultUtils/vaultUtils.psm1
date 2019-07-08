@@ -36,10 +36,12 @@ Export-ModuleMember `
         'Cancel-VaultRekey'
         'Cancel-VaultRekeyVerification'
 
+        'Cancel-VaultRootTokenGeneration'
+
         'Unwrap-VaultWrapping'
         'Wrap-VaultWrapping'
         'Lookup-VaultWrapping'
         'Rewrap-VaultWrapping'
 
-        'Renew-Token'
+        'Renew-VaultToken'
     )

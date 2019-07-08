@@ -20,8 +20,8 @@
     * Changes:
         * Removed function calls Set-StrictMode and Use-CallerPreference from begin block.
         * Formatting changes: 
-            * Formatting changes to curly brackets
-            * Formatting of param block (and capitalization of [string[]])
+            * Formatting changes to curly brackets.
+            * Formatting of param block (and capitalization of [string[]]).
 #>
 
 function ConvertTo-Base64 {
