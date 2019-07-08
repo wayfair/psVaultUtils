@@ -58,18 +58,21 @@ function New-VaultKVSecret {
     param(
         #Specifies a KV engine to write secrets to.
         [Parameter(
+            Mandatoy = $true,
             Position = 0
         )]
         [String] $Engine,
 
         #Specifies the secrets path to write a secret to.
         [Parameter(
+            Mandatory = $true,
             Position = 1
         )]
         [String] $SecretsPath,
 
         #Specifies a hashtable of one or more KV pairs, of which the values are "secrets".
         [Parameter(
+            Mandatory = $true,
             Position = 2
         )]
         [Hashtable] $Secrets,

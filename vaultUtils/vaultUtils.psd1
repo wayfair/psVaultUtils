@@ -114,6 +114,13 @@
 
         'New-VaultKVSecret'
         'Get-VaultKVSecret'
+        'Remove-VaultKVSecret'
+        'Restore-VaultKVSecret'
+
+        'New-VaultCubbyholeSecret'
+        'Get-VaultCubbyholeSecret'
+        'Update-VaultCubbyholeSecret'
+        'Remove-VaultCubbyholeSecret'
 
         'Get-VaultKVEngine'
         'Set-VaultKVEngine'

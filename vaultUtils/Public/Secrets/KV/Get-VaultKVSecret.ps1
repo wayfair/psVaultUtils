@@ -62,12 +62,14 @@ function Get-VaultKVSecret {
     param(
         #Specifies a KV engine to retrieve secrets from.
         [Parameter(
+            Mandatory = $true,
             Position = 0
         )]
         [String] $Engine,
 
         #Specifies the secrets path to retrieve secrets from.
         [Parameter(
+            Mandatory = $true,
             Position = 1
         )]
         [String] $SecretsPath,
