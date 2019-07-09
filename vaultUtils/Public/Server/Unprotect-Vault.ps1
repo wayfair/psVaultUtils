@@ -122,7 +122,7 @@ DYNAMIC PARAMETERS
 
     begin {
         if ($PSCmdlet.ParameterSetName -eq "Regular") {
-            Test-VaultSessionVariable -CheckFor 'Nodes','Token','Cred','LoginMethod'
+            Test-VaultSessionVariable -CheckFor 'Nodes','Token'
         }
 
         switch ($PSCmdlet.ParameterSetName) {

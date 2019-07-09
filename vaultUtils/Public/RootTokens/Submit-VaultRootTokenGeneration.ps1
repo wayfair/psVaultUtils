@@ -61,7 +61,7 @@ Please provide a single Unseal Key: ********************************************
     )
 
     begin {
-
+        Test-VaultSessionVariable -CheckFor 'Address','Token'
     }
 
     process {

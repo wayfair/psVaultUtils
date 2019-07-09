@@ -61,7 +61,7 @@ function Get-VaultLoginToken {
             #Transcript was not running.
         }
 
-        Test-VaultSessionVariable -CheckFor 'LoginMethod','Cred','Address'     
+        Test-VaultSessionVariable -CheckFor 'LoginMethod','Cred','Address'
     }
 
     process {

@@ -32,7 +32,7 @@ function Get-VaultKeyStatus {
     )
 
     begin {
-        Test-VaultSessionVariable -CheckFor 'Address'
+        Test-VaultSessionVariable -CheckFor 'Address','Token'
     }
 
     process {

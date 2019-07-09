@@ -1,6 +1,6 @@
 variables:
   ModuleName: 'vaultUtils'
-  ModuleVersion: '1.1.1'
+  ModuleVersion: '1.1.2'
   DevRepository: 'dev-windows-modules'
   ProdRepository: 'prod-windows-modules'
   Notification: "it-digest"

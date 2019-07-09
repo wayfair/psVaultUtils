@@ -69,7 +69,7 @@ function Get-VaultWrapping {
             Test-VaultSessionVariable -CheckFor 'Address'
         }
         else {
-            Test-VaultSessionVariable -CheckFor 'Address','Token','Cred','LoginMethod'
+            Test-VaultSessionVariable -CheckFor 'Address','Token'
         }
     }
 

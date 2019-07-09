@@ -45,7 +45,7 @@ function Set-VaultKVEngine {
     )
 
     begin {
-        Test-VaultSessionVariable -CheckFor 'Address','Token','Cred','LoginMethod'
+        Test-VaultSessionVariable -CheckFor 'Address','Token'
     }
 
     process {

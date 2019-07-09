@@ -67,7 +67,7 @@ function Revoke-VaultToken {
     )
 
     begin {
-        Test-VaultSessionVariable -CheckFor 'LoginMethod','Cred','Address','Token'
+        Test-VaultSessionVariable -CheckFor 'Address','Token'
     }
 
     process {

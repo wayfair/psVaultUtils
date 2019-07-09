@@ -68,7 +68,7 @@ function Submit-VaultRekey {
     )
 
     begin {
-
+        Test-VaultSessionVariable -CheckFor 'Address','Token'
     }
 
     process {

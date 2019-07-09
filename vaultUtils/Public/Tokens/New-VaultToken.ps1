@@ -216,7 +216,7 @@ function New-VaultToken {
     )
 
     begin {
-        Test-VaultSessionVariable -CheckFor 'LoginMethod','Cred','Address','Token', 'RootToken'
+        Test-VaultSessionVariable -CheckFor 'Address','Token','RootToken'
     }
 
     process {
