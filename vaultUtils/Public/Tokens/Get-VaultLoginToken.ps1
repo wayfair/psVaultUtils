@@ -54,7 +54,7 @@ function Get-VaultLoginToken {
 
     begin {
         Try {
-            Stop-Transcript
+            $null = Stop-Transcript
             Write-Warning "A running Transcript was stopped to prevent writing token information to disk."
         }
         Catch {
