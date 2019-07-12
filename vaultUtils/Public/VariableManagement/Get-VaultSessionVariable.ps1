@@ -14,11 +14,11 @@ function Get-VaultSessionVariable {
 
     Name                           Value
     ----                           -----
-    VAULT_ADDR                     https://active.vault.service.consul.devcorp.wayfair.com
-    VAULT_ADDR_STANDBY             https://standby.vault.service.consul.devcorp.wayfair.com
+    VAULT_ADDR                     https://active.vault.service.consul.domain.com
+    VAULT_ADDR_STANDBY             https://standby.vault.service.consul.domain.com
     VAULT_CRED                     System.Management.Automation.PSCredential
     VAULT_LOGIN_METHOD             LDAP
-    VAULT_NODES                    {devbo1chvault01.devcorp.wayfair.com, devbo1chvault02.devcorp.wayfair.com}
+    VAULT_NODES                    {devvault01.domain.com, devvault02.domain.com}
     VAULT_TOKEN                    s.JAXF5ifMEo5oi6ZFZHvO1wBv
 
     This command does not require any input.

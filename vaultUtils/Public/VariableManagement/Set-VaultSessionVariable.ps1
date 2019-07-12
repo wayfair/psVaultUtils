@@ -15,26 +15,26 @@ function Set-VaultSessionVariable {
 .EXAMPLE
     PS> $cred = Get-Credential
 
-    PS> Set-VaultSessionVariable -VaultURL https://hvault.devcorp.wayfair.com -Credential $cred -LoginMethod LDAP -Passthru
+    PS> Set-VaultSessionVariable -VaultURL https://hvault.domain.com -Credential $cred -LoginMethod LDAP -Passthru
 
     Name                           Value
     ----                           -----
-    VAULT_ADDR                     https://active.vault.service.consul.devcorp.wayfair.com
-    VAULT_ADDR_STANDBY             https://standby.vault.service.consul.devcorp.wayfair.com
+    VAULT_ADDR                     https://active.vault.service.consul.domain.com
+    VAULT_ADDR_STANDBY             https://standby.vault.service.consul.domain.com
     VAULT_CRED                     System.Management.Automation.PSCredential
     VAULT_LOGIN_METHOD             LDAP
-    VAULT_NODES                    {devbo1chvault01.devcorp.wayfair.com, devbo1chvault02.devcorp.wayfair.com}
+    VAULT_NODES                    {devvault01.domain.com, devvault02.domain.com}
 
 .EXAMPLE
-    PS> Set-VaultSessionVariable -VaultURL 'vault.service.consul.devcorp.wayfair.com' -Credential $cred -LoginMethod LDAP -Passthru
+    PS> Set-VaultSessionVariable -VaultURL 'vault.service.consul.domain.com' -Credential $cred -LoginMethod LDAP -Passthru
 
     Name                           Value
     ----                           -----
-    VAULT_ADDR                     https://active.vault.service.consul.devcorp.wayfair.com
-    VAULT_ADDR_STANDBY             https://standby.vault.service.consul.devcorp.wayfair.com
+    VAULT_ADDR                     https://active.vault.service.consul.domain.com
+    VAULT_ADDR_STANDBY             https://standby.vault.service.consul.domain.com
     VAULT_CRED                     System.Management.Automation.PSCredential
     VAULT_LOGIN_METHOD             LDAP
-    VAULT_NODES                    {devbo1chvault01.devcorp.wayfair.com, devbo1chvault02.devcorp.wayfair.com}
+    VAULT_NODES                    {devvault01.domain.com, devvault02.domain.com}
 
     This example demonstrates specifying a consul DNS entry. Note that 'https://' is missing from the value.
 #>

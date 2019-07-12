@@ -10,7 +10,7 @@ function Revoke-VaultLeader {
 .EXAMPLE
     PS> Revoke-VaultLeader
 
-    Initiated Step-Down on Active Node: https://DEVBO1CHVAULT02.devcorp.wayfair.com:443 
+    Initiated Step-Down on Active Node: https://DEVVAULT02.domain.com:443 
 #>
     [CmdletBinding()]
     param()

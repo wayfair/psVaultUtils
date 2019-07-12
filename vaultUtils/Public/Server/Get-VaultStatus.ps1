@@ -18,7 +18,7 @@ function Get-VaultStatus {
     version         : 1.1.2
     cluster_name    : vault-cluster-47802c8f
     cluster_id      : 9708a39d-dd9c-017f-333a-5551e83d9be7
-    cluster_leader  : https://DEVBO1CHVAULT02.devcorp.wayfair.com:443
+    cluster_leader  : https://DEVVAULT02.domain.com:443
     server_time_utc : 7/1/2019 4:13:50 PM +00:00
     ha_enabled      : True
 
@@ -33,7 +33,7 @@ function Get-VaultStatus {
         "version":  "1.1.2",
         "cluster_name":  "vault-cluster-47802c8f",
         "cluster_id":  "9708a39d-dd9c-017f-333a-5551e83d9be7",
-        "cluster_leader":  "https://DEVBO1CHVAULT02.devcorp.wayfair.com:443",
+        "cluster_leader":  "https://DEVVAULT02.domain.com:443",
         "server_time_utc":  "\/Date(1561997735000)\/",
         "ha_enabled":  true
     }

@@ -58,7 +58,7 @@ Before you can run most commands, you need to set some global variables:
 ```
 PS> $cred = Get-Credential 
 
-PS> Set-VaultSessionVariable -VaultURL https://hvault.devcorp.wayfair.com -Credential $cred -LoginMethod LDAP
+PS> Set-VaultSessionVariable -VaultURL https://vault.domain.com -Credential $cred -LoginMethod LDAP
 ```
 
 You can see all of the Vault-specific variables that are set by executing:
@@ -68,11 +68,11 @@ PS> Get-VaultSessionVariable
 
 Name                           Value
 ----                           -----
-VAULT_ADDR                     https://active.vault.service.consul.devcorp.wayfair.com
-VAULT_ADDR_STANDBY             https://standby.vault.service.consul.devcorp.wayfair.com
+VAULT_ADDR                     https://active.vault.service.consul.domain.com
+VAULT_ADDR_STANDBY             https://standby.vault.service.consul.domain.com
 VAULT_CRED                     System.Management.Automation.PSCredential
 VAULT_LOGIN_METHOD             LDAP
-VAULT_NODES                    {devbo1chvault02.devcorp.wayfair.com, devbo1chvault01.devcorp.wayfair.com}
+VAULT_NODES                    {devvault02.domain.com, devvault01.domain.com}
 ```
 
 NOTE: to prevent a `VAULT_TOKEN` from being written to a PSTranscript, PSTranscripting is turned off, if it was previously on.
@@ -92,7 +92,7 @@ threshold       : 3
 version         : 1.1.2
 cluster_name    : vault-cluster-47802c8f
 cluster_id      : 9708a39d-dd9c-017f-333a-5551e83d9be7
-cluster_leader  : https://DEVBO1CHVAULT02.devcorp.wayfair.com:443
+cluster_leader  : https://devvault02.domain.com:443
 server_time_utc : 7/1/2019 2:17:53 PM +00:00
 ha_enabled      : True
 ```
@@ -359,7 +359,7 @@ random_bytes
 ```
 PS> Protect-Vault
 
-Sealed Active Vault Node: https://DEVBO1CHVAULT01.devcorp.wayfair.com:443
+Sealed Active Vault Node: https://devvault01.domain.com:443
 ```
 
 This command does not require any parameters. When executed, the active Vault node will be sealed. From the API, only the active node can be sealed. You cannot seal a standby node until it becomes active. 
@@ -367,7 +367,7 @@ This command does not require any parameters. When executed, the active Vault no
 ### Unprotect (Unseal) Vault
 
 ```
-PS> Unprotect-Vault -VaultNode devbo1chvault02.devcorp.wayfair.com
+PS> Unprotect-Vault -VaultNode devvault02.domain.com
 Please provide a single Unseal Key: ********************************************
 
 type          : shamir
@@ -393,7 +393,7 @@ Finally, this command must be executed X times (with different unseal keys), whe
 ```
 PS> Revoke-VaultLeader
 
-Initiated Step-Down on Active Node: https://DEVBO1CHVAULT02.devcorp.wayfair.com:443
+Initiated Step-Down on Active Node: https://devvault02.domain.com:443
 ```
 
 This command requires no input, as it can only be executed against the active node. It causes the active node to step-down, resulting in standby node becoming active. 

@@ -7,27 +7,27 @@ function Test-VaultHealth {
     Tests the health of a specified Vault node. Returns a status code and array of strings - information about what the status code means as well as the node that was queried.
 
 .EXAMPLE 
-    PS> Test-VaultHealth -VaultNode devbo1chvault02.devcorp.wayfair.com
+    PS> Test-VaultHealth -VaultNode devvault02.domain.com
 
     Code Status                          Node
     ---- ------                          ----
-    200 {Initialized, Unsealed, Active} devbo1chvault02.devcorp.wayfair.com
+    200 {Initialized, Unsealed, Active}  devvault02.domain.com
 
     This example demonstrates the response returned by a unsealed, initialized and active node.
 
 .EXAMPLE
-    PS> Test-VaultHealth -VaultNode devbo1chvault01.devcorp.wayfair.com
+    PS> Test-VaultHealth -VaultNode devvault01.domain.com
 
     Code Status              Node
     ---- ------              ----
-    429 {Unsealed, Standby} devbo1chvault01.devcorp.wayfair.com
+    429 {Unsealed, Standby}  devvault01.domain.com
 
 .EXAMPLE
-    PS> Test-VaultHealth -VaultNodeOverride devbo1chvault02.devcorp.wayfair.com
+    PS> Test-VaultHealth -VaultNodeOverride devvault02.domain.com
 
     Code Status  Node
     ---- ------  ----
-    503 {Sealed} devbo1chvault02.devcorp.wayfair.com
+    503 {Sealed} devvault02.domain.com
 
     This example demonstates the response returned by a sealed node, using the VaultNodeOverride parameter.
 

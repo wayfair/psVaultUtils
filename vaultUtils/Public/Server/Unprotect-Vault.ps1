@@ -15,7 +15,7 @@ DYNAMIC PARAMETERS
         Specifies the hostname of a sealed node.
 
 .EXAMPLE
-    PS> Unprotect-Vault -VaultNode devbo1chvault01.devcorp.wayfair.com
+    PS> Unprotect-Vault -VaultNode devvault01.domain.com
     Please provide a single Unseal Key: ********************************************
 
     type          : shamir
@@ -32,11 +32,11 @@ DYNAMIC PARAMETERS
     Vault is now one-third of the way unsealed. 
 
 .EXAMPLE
-    PS> Unprotect-Vault -VaultNodeOverride devbo1chvault02.devcorp.wayfair.com
+    PS> Unprotect-Vault -VaultNodeOverride devvault02.domain.com
 
     cmdlet Set-VaultSessionVariable at command pipeline position 1
     Supply values for the following parameters:
-    VaultURL: https://hvault.devcorp.wayfair.com
+    VaultURL: https://vault.domain.com
     LoginMethod: ldap
 
     cmdlet Get-Credential at command pipeline position 1

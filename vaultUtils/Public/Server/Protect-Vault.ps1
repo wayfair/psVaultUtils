@@ -12,7 +12,7 @@ function Protect-Vault {
 .EXAMPLE
     PS> Protect-Vault
 
-    Sealed Active Vault Node: https://DEVBO1CHVAULT02.devcorp.wayfair.com:443
+    Sealed Active Vault Node: https://DEVVAULT02.domain.com:443
 
     The only output this command produces is affirmation that the active node was sealed. 
 #>
