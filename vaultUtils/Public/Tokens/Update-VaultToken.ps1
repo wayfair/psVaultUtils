@@ -110,11 +110,10 @@ function Update-VaultToken {
         $uri = $global:VAULT_ADDR
 
         switch ($PSCmdlet.ParameterSetName) {
-            'bySelf'  { $getToken = Get-VaultToken -Token $global:VAULT_TOKEN          }
-            'byToken' { $getToken = Get-VaultToken -Token $($Token | Find-VaultToken)  }
+            'bySelf'  { $getToken = Get-VaultToken -Self }
+            'byToken' { $getToken = Get-VaultToken -Token $($Token | Find-VaultToken) }
         }
 
-        #
         if ($getToken.data.display_name -match "ldap") {
             Write-Error "LDAP-based tokens cannot have their lease/ttl extended."
             return
@@ -150,9 +149,10 @@ function Update-VaultToken {
                 Method = 'Post'
             }
 
-            if ($PSCmdlet.ParameterSetName -eq 'byToken') {
+            if ($jsonPayload) {
                 $irmParams += @{ Body = $($jsonPayload | ConvertFrom-Json | ConvertTo-Json -Compress) }
             }
+
 
             try {
                 $result = Invoke-RestMethod @irmParams
