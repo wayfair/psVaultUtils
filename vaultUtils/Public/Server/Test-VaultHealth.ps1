@@ -101,9 +101,13 @@ function Test-VaultHealth {
     process {
         $uri = "https://$vaultNode"
 
+        #UseBasicParsing is true because the *active* Vault node throws an 
+        #error about IE not being available or first launch configuration not 
+        #being complete for Windows 2016 Server Core instances. Could be related to HEAD method??
         $iwrParams = @{
-            Uri    = "$uri/v1/sys/health"
-            Method = 'Head'
+            Uri             = "$uri/v1/sys/health"
+            Method          = 'Head'
+            UseBasicParsing = $true
         }
 
         try {
