@@ -62,7 +62,7 @@ function Find-VaultTokenAccessor {
             }
         }
         else {
-            #Token is PSObject
+            #Token is PSObject/Hashtable
 
             if ($Accessor.auth.accessor) {
                 $iAccessor = $Accessor.auth.accessor

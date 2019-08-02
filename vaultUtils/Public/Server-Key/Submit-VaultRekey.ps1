@@ -8,8 +8,8 @@ function Submit-VaultRekey {
     If the threshold number of master key shares is reached, Vault will complete the rekey. Otherwise, this API must be called multiple times until that threshold is met. 
     The rekey nonce operation must be provided with each call.
 
-    When the operation is complete, this will return a response like the example below; 
-    otherwise the response will be the same as the GET method against sys/rekey/init, providing status on the operation itself.
+    When the operation is complete, this will return a response like in the help examples; 
+    otherwise the response will be the same as the Get-VaultRekeyProgress, providing status on the operation itself.
 
     If verification was requested, successfully completing this flow will immediately put the operation into a verification state, 
     and provide the nonce for the verification operation.
@@ -63,7 +63,7 @@ function Submit-VaultRekey {
         [Parameter(
             Position = 1
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'Json'
     )
 
@@ -100,12 +100,13 @@ function Submit-VaultRekey {
             throw
         }
 
-        if ($OutputType -eq "Json") {
-            $result | ConvertTo-Json
+        $formatParams = @{
+            InputObject = $result
+            JustData    = $false
+            OutputType  = $OutputType
         }
-        else {
-            $result
-        }
+
+        Format-VaultOutput @formatParams
     }
 
     end {

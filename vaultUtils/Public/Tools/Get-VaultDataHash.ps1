@@ -52,7 +52,7 @@ function Get-VaultDataHash {
         [Parameter(
             Position = 3
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the data should be displayed in the console.
@@ -90,26 +90,14 @@ function Get-VaultDataHash {
             throw
         }
 
-        switch ($OutputType) {
-            'Json' {
-                if ($JustData) {
-                    $result.data | Select-Object 'sum' | ConvertTo-Json
-                }
-                else {
-                    $result | ConvertTo-Json
-                }
-            }
-
-            'PSObject' {
-                if ($JustData) {
-                    $result.data
-                }
-                else {
-                   $result
-                }
-            }
+        $formatParams = @{
+            InputObject = $result
+            DataType    = 'hash_data'
+            JustData    = $JustData.IsPresent
+            OutputType  = $OutputType
         }
-#>
+
+        Format-VaultOutput @formatParams
     }
 
     end {

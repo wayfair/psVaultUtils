@@ -135,35 +135,14 @@ function New-VaultKVSecret {
             throw
         }
 
-        switch ($OutputType) {
-            'Json' {
-                if ($JustData) {
-                    if ($MetaData) {
-                        $result.data | ConvertTo-Json
-                    }
-                    else {
-                        $result.data.data | ConvertTo-Json
-                    }
-                }
-                else {
-                    $result | ConvertTo-Json
-                }
-            }
-
-            'PSObject' {
-                if ($JustData) {
-                    if ($MetaData) {
-                        $result.data
-                    }
-                    else {
-                        $result.data.data
-                    }
-                }
-                else {
-                    $result
-                }
-            }
+        $formatParams = @{
+            InputObject = $result
+            DataType    = 'data'
+            JustData    = $JustData.IsPresent
+            OutputType  = $OutputType
         }
+
+        Format-VaultOutput @formatParams
     }
 
     end {

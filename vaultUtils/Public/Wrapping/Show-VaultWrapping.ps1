@@ -33,7 +33,7 @@ function Show-VaultWrapping {
         [Parameter(
             Position = 1
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the data should be displayed in the console.
@@ -70,25 +70,14 @@ function Show-VaultWrapping {
             throw
         }
 
-        switch ($OutputType) {
-            'Json' {
-                if ($JustData) {
-                    $result.data | ConvertTo-Json
-                }
-                else {
-                    $result | ConvertTo-Json
-                }
-            }
-
-            'PSObject' {
-                if ($JustData) {
-                    $result.data
-                }
-                else {
-                    $result
-                }
-            }
+        $formatParams = @{
+            InputObject = $result
+            DataType    = 'data'
+            JustData    = $JustData.IsPresent
+            OutputType  = $OutputType
         }
+
+        Format-VaultOutput @formatParams
     }
 
     end {

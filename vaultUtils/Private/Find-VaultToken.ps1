@@ -69,7 +69,7 @@ function Find-VaultToken {
             }
         }
         else {
-            #Token is PSObject
+            #Token is PSObject/Hashtable
 
             if ($Token.auth.client_token) {
                 $iToken = $Token.auth.client_token

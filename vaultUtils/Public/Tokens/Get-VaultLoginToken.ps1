@@ -36,18 +36,28 @@ function Get-VaultLoginToken {
     This command authenticates to vault using credentials and login method defined in VAULT_CRED and VAULT_LOGIN_METHOD,
     and then passes the resulting object to Set-VaultLoginToken, which assigns the token to VAULT_TOKEN.
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        DefaultParameterSetName = 'AllData'
+    )]
     param(
         #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
         [Parameter(
             Position = 0
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the token should be displayed in the console.
         [Parameter(
-            Position = 1
+            Position = 1,
+            ParameterSetName = 'JustData'
+        )]
+        [Switch] $JustData,
+
+        #Specifies whether or not just the token should be displayed in the console.
+        [Parameter(
+            Position = 2,
+            ParameterSetName = 'JustToken'
         )]
         [Switch] $JustToken
     )
@@ -96,27 +106,23 @@ function Get-VaultLoginToken {
                 throw
             }
 
-            switch ($OutputType) {
-                'Json' {
-                    if ($JustToken) {
-                        $result.auth | Select-Object 'client_token' | ConvertTo-Json
-                    }
-                    else {
-                        $result | ConvertTo-Json
-                    }
-                }
-
-                'PSObject' {
-                    if ($JustToken) {
-                        [pscustomobject] @{
-                            'client_token' = $result.auth.client_token
-                        }
-                    }
-                    else {
-                        $result
-                    }
-                }
+            $formatParams = @{
+                InputObject = $result
+                OutputType  = $OutputType
             }
+
+            if ($JustData.IsPresent -or $JustToken.IsPresent) {
+                $formatParams += @{ JustData = $true }
+            }
+
+            if ($JustData) {
+                $formatParams += @{ DataType = 'auth' }
+            }
+            elseif ($JustToken) {
+                $formatParams += @{ DataType = 'login_token_data' }
+            }
+    
+            Format-VaultOutput @formatParams
         }
     }
 

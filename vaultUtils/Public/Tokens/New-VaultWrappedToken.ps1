@@ -49,7 +49,7 @@ function New-VaultWrappedToken {
         [Parameter(
             Position = 2
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject',
 
         [Switch] $JustWrapInfo
@@ -89,25 +89,14 @@ function New-VaultWrappedToken {
 
         #region Format Output
 
-        switch ($OutputType) {
-            'Json' {
-                if ($JustWrapInfo) {
-                    $result.wrap_info | ConvertTo-Json
-                }
-                else {
-                    $result | ConvertTo-Json
-                }
-            }
-
-            'PSObject' {
-                if ($JustWrapInfo) {
-                    $result.wrap_info
-                }
-                else {
-                    $result
-                }
-            }
+        $formatParams = @{
+            InputObject = $result
+            DataType    = 'wrap_info'
+            JustData    = $JustWrapInfo.IsPresent
+            OutputType  = $OutputType
         }
+
+        Format-VaultOutput @formatParams
 
         #endregion
     }

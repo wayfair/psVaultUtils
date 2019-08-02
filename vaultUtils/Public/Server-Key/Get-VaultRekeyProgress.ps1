@@ -44,7 +44,7 @@ function Get-VaultRekeyProgress {
         [Parameter(
             Position = 0
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject'
     )
 
@@ -68,12 +68,13 @@ function Get-VaultRekeyProgress {
             throw
         }
 
-        if ($OutputType -eq "Json") {
-            $result | ConvertTo-Json
+        $formatParams = @{
+            InputObject = $result
+            JustData    = $false
+            OutputType  = $OutputType
         }
-        else {
-            $result
-        }
+
+        Format-VaultOutput @formatParams
     }
 
     end {

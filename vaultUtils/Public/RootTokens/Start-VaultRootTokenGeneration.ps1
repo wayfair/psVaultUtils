@@ -36,7 +36,7 @@ function Start-VaultRootTokenGeneration {
         [Parameter(
             Position = 1
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject'
     )
 
@@ -72,12 +72,13 @@ function Start-VaultRootTokenGeneration {
             throw
         }
 
-        if ($OutputType -eq "Json") {
-            $result | ConvertTo-Json
+        $formatParams = @{
+            InputObject = $result
+            JustData    = $false
+            OutputType  = $OutputType
         }
-        else {
-            $result
-        }
+
+        Format-VaultOutput @formatParams
     }
 
     end {

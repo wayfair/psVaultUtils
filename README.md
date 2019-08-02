@@ -212,10 +212,10 @@ auth           : @{client_token=s.tOZMiBe0WkpZ4NeUCXKdrvVA; accessor=kQdhTOrp5IE
 PS> $newTokenParams = @{
 >>      RoleName = 'SomeRole'
 >>      Policies = 'jenkinsc02-secret-consumer'
->>      MetaData = @{ 'user'='bsmall' }
+>>      MetaData = @{ 'user'='ben.small' }
 >>      Renewable = $true
 >>      TimeToLive = "48h"
->>      DisplayName = "bsmall"
+>>      DisplayName = "ben.small"
 >>      NumberOfUses = 10
 >>  }
 
@@ -272,7 +272,7 @@ lease_id       :
 renewable      : False
 lease_duration : 0
 data           : @{accessor=mqzm7rTDXZIeZnF357znsZdZ; creation_time=1562101179; creation_ttl=172800;
-                 display_name=token-bsmall; entity_id=357f788d-75cf-c16d-f6d9-cdbd6c5deee8;
+                 display_name=token-ben.small; entity_id=357f788d-75cf-c16d-f6d9-cdbd6c5deee8;
                  expire_time=2019-07-04T16:59:39.5071214-04:00; explicit_max_ttl=0; external_namespace_policies=; id=;
                  identity_policies=System.Object[]; issue_time=2019-07-02T16:59:39.5071214-04:00; meta=; num_uses=10;
                  orphan=False; path=auth/token/create; policies=System.Object[]; renewable=True; ttl=172782; type=service}

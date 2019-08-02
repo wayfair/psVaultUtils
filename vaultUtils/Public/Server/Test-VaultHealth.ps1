@@ -47,7 +47,7 @@ function Test-VaultHealth {
         [Parameter(
             Position = 2
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject'
     )
 
@@ -136,18 +136,19 @@ function Test-VaultHealth {
             default { $status = @('Unknown') }
         }
 
-        $outobj = [pscustomobject] @{
+        $result = [pscustomobject] @{
             Code   = $code
             Status = $status
             Node   = $vaultNode
         }
-        
-        if ($OutputType -eq "Json") {
-            $outobj | ConvertTo-Json
+
+        $formatParams = @{
+            InputObject = $result
+            JustData    = $false
+            OutputType  = $OutputType
         }
-        else {
-            $outobj
-        }
+
+        Format-VaultOutput @formatParams
     }
 
     end {
