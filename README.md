@@ -1,17 +1,24 @@
-## Synopsis
-VaultUtils is a module for interacting with Hashicorp Vault.
+# Synopsis
+psVaultUtils is a module for interacting with Hashicorp Vault.
 
-## Author
+# Author
 Ben Small <bsmall@wayfair.com>
 
-## Verb Mapping // Command Aliases
+# Module Limitations
+* LDAP is currently the only supported authentication method besides token authentication, which is implicitly supported. 
+* A function to initialize a new Vault instance/cluster is not currently present.
+* Sets of functions to interact with engines other than _KV_ and _Cubbyhole_ are not currently present.
+* Sets of functions to interact with policies are not currently present.
+* Sets of functions and/or parameters to interact with _enterprise features_ are generally not present.
+
+# Verb Mapping // Command Aliases
 
 Hashicorp Vault uses several "verbs", which, according to PowerShell standards are considered unapproved, and make commands less discoverable. 
 
 Consider the possibility that someone who is familiar with Vault, but not PowerShell might intuit certain commands based on Vault nomenclature. 
 The following verb mappings and command alises might actually make a person who is familiar with Vault, but not familiar with Powershell more discoverable:
 
-### Wraping Verbs & Command Aliases
+## Wraping Verbs & Command Aliases
 
 * Wrap --> New
 * Unwrap --> Get
@@ -25,7 +32,7 @@ The following verb mappings and command alises might actually make a person who 
 * Update-VaultWrapping --> Rewrap-VaultWrapping
 * Show-VaultWrapping --> Lookup-VaultWrapping
 
-### Seal / Unseal / Stepdown Verbs & Command Aliases
+## Seal / Unseal / Stepdown Verbs & Command Aliases
 
 * Seal --> Protect
 * Unseal --> Unprotect
@@ -37,7 +44,7 @@ The following verb mappings and command alises might actually make a person who 
 * Unprotect-Vault --> Unseal-Vault
 * Revoke-VaultLeader --> Stepdown-VaultLeader
 
-### Keys & Token Verbs & Command Aliases
+## Keys & Token Verbs & Command Aliases
 
 * Cancel --> Stop
 * Renew --> Update
@@ -49,9 +56,9 @@ The following verb mappings and command alises might actually make a person who 
 * Stop-VaultRootTokenGeneration --> Cancel-VaultRootTokenGeneration
 * Update-VaultToken --> Renew-VaultToken
 
-## Command Usage
+# Command Usage
 
-### Setting Up Vault Variables
+## Setting Up Vault Variables
 
 Before you can run most commands, you need to set some global variables:
 
@@ -63,7 +70,7 @@ PS> Set-VaultSessionVariable -VaultURL https://vault.domain.com -Credential $cre
 
 You can see all of the Vault-specific variables that are set by executing:
 
-```
+```powershell
 PS> Get-VaultSessionVariable
 
 Name                           Value
@@ -77,11 +84,11 @@ VAULT_NODES                    {devvault02.domain.com, devvault01.domain.com}
 
 NOTE: to prevent a `VAULT_TOKEN` from being written to a PSTranscript, PSTranscripting is turned off, if it was previously on.
 
-### Getting the Status of Vault
+## Getting the Status of Vault
 
 With `VAULT_ADDR` defined, we can now poll the status of Vault:
 
-```
+```powershell
 PS> Get-VaultStatus
 
 seal_type       : shamir
@@ -99,12 +106,12 @@ ha_enabled      : True
 
 Beyond that, we can't do much else though, because we need a `VAULT_TOKEN` to perform authenticated actions...
 
-### Getting A Vault Token For Authentication
+## Getting A Vault Token For Authentication
 
 The next pair of commands to execute, to complete to "setup" process is:
 
-```
-PS> Get-VaultToken | Set-VaultToken
+```powershell
+PS> Get-VaultLoginToken | Set-VaultLoginToken
 ```
 
 Doing so will create another global variable `VAULT_TOKEN`, which will be used to authenticate you to Hashicorp Vault instance defined in `VAULT_ADDR`.
@@ -115,15 +122,14 @@ You are now "authenticated" to Vault. From here, you can:
 * Wrap, unwrap and/or rewrap data, as well as lookup wrapped data information.
 * Generate random byte information in Base64 or Hex formats.
 * Generate SHA2 hashes for Base64 or Hex-encoded information.
-
-If your token has administrative capabilities, you can seal vault, or tell the active node to step down. 
+* Additionally, if your token has administrative capabilities, you can seal vault, or tell the active node to step down. 
 
 
 ## Interacting with Engines & Secrets
 
 ### Getting a KV Secret
 
-```
+```powershell
 PS> Get-VaultKVSecret -Engine dsc -SecretsPath sql_ag/conf_ag -OutputType PSObject -JustData
 
 foo
@@ -133,7 +139,7 @@ bar
 
 ### Getting Information about a KV Engine
 
-```
+```powershell
 PS> Get-VaultKVEngine -Engine dsc
 
 
@@ -149,7 +155,7 @@ auth           :
 
 ### Creating a Secret in a KV Engine
 
-```
+```powershell
 PS> New-VaultKVSecret -Engine test-kv -SecretsPath foo/bar -Secrets @{'foo'='bar'}
 
 
@@ -165,7 +171,7 @@ auth           :
 
 ### Getting a Secret's Metadata
 
-```
+```powershell
 PS> Get-VaultKVSecret -Engine test-kv -SecretsPath foo/bar -MetaData -OutputType Json
 {
     "request_id":  "5825a510-63c0-bcb2-fa37-c8f9adaacbb6",
@@ -193,7 +199,7 @@ PS> Get-VaultKVSecret -Engine test-kv -SecretsPath foo/bar -MetaData -OutputType
 
 ### Creating a New Token
 
-```
+```powershell
 PS> New-VaultToken
 
 request_id     : 509ad951-ad19-de93-01ad-2c9864a0d2b8
@@ -208,7 +214,7 @@ auth           : @{client_token=s.tOZMiBe0WkpZ4NeUCXKdrvVA; accessor=kQdhTOrp5IE
                  renewable=False; entity_id=357f788d-75cf-c16d-f6d9-cdbd6c5deee8; token_type=service; orphan=False}
 ```
 
-```
+```powershell
 PS> $newTokenParams = @{
 >>      RoleName = 'SomeRole'
 >>      Policies = 'jenkinsc02-secret-consumer'
@@ -235,7 +241,7 @@ auth           : @{client_token=s.Ezg2ZSLaKcs8g3I32BQrBU3H; accessor=xa06uj4p0va
 
 ### Updating the Lease/TTL of a Token
 
-```
+```powershell
 PS> Update-VaultToken -Token s.9xLfaE97zipyovfM9owMbqSl -Increment 200h
 
 request_id     : b21dde75-0f9f-14a3-c1d7-d3ceb1ad32c2
@@ -252,7 +258,7 @@ auth           : @{client_token=s.9xLfaE97zipyovfM9owMbqSl; accessor=nGxVOLVniYt
 
 ### Revoking a Token
 
-```
+```powershell
 PS> Get-VaultToken -Token s.9xLfaE97zipyovfM9owMbqSl | Revoke-VaultToken
 
 Confirm
@@ -263,7 +269,7 @@ Performing the operation "Revoke Vault token" on target "s.9xLfaE97zipyovfM9owMb
 
 ### Viewing & Revoking Token Accessors
 
-```
+```powershell
 PS> Get-VaultTokenAccessor -Accessor mqzm7rTDXZIeZnF357znsZdZ
 
 
@@ -281,7 +287,7 @@ warnings       :
 auth           :
 ```
 
-```
+```powershell
 Get-VaultTokenAccessor -Accessor mqzm7rTDXZIeZnF357znsZdZ | Revoke-VaultTokenAccessor -Confirm:$false
 ```
 
@@ -289,7 +295,7 @@ Get-VaultTokenAccessor -Accessor mqzm7rTDXZIeZnF357znsZdZ | Revoke-VaultTokenAcc
 
 ### Wrapping KV Information
 
-```
+```powershell
 PS> New-VaultWrapping -WrapData @{'zip'='zap'} -WrapTTL 5h -OutputType PSObject
 
 request_id     :
@@ -307,7 +313,7 @@ auth           :
 
 Using the token from the example above, show information about the wrapped data (but not the data itself):
 
-```
+```powershell
 PS> Show-VaultWrapping -Token s.6z8pEEAxFqaQ91HiVcWNMmVC
 
 request_id     : 7d990020-0615-c293-548a-fb810ee63b16
@@ -324,7 +330,7 @@ auth           :
 
 Using the same token from the two examples above, retrieve wrapped data:
 
-```
+```powershell
 PS> Get-VaultWrapping -Token s.6z8pEEAxFqaQ91HiVcWNMmVC -OutputType Json
 {
     "request_id":  "e5732ad5-e15f-0b45-9324-5ad6fe0fa705",
@@ -344,7 +350,7 @@ NOTE: Wrapped data can only be retrieved once. If the same command were to be ex
 
 ### Generate Random Bytes In Hex
 
-```
+```powershell
 PS> Get-VaultRandomBytes -Bytes 64 -Format Hex -OutputType PSObject -JustData
 
 random_bytes
@@ -356,7 +362,7 @@ random_bytes
 
 ### Protect (Seal) Vault
 
-```
+```powershell
 PS> Protect-Vault
 
 Sealed Active Vault Node: https://devvault01.domain.com:443
@@ -366,7 +372,7 @@ This command does not require any parameters. When executed, the active Vault no
 
 ### Unprotect (Unseal) Vault
 
-```
+```powershell
 PS> Unprotect-Vault -VaultNode devvault02.domain.com
 Please provide a single Unseal Key: ********************************************
 
@@ -390,7 +396,7 @@ Finally, this command must be executed X times (with different unseal keys), whe
 
 ### Revoke the Active Vault Leader (Stepdown)
 
-```
+```powershell
 PS> Revoke-VaultLeader
 
 Initiated Step-Down on Active Node: https://devvault02.domain.com:443
@@ -399,11 +405,11 @@ Initiated Step-Down on Active Node: https://devvault02.domain.com:443
 This command requires no input, as it can only be executed against the active node. It causes the active node to step-down, resulting in standby node becoming active. 
 
 
-## Wrapping Token For DSC Proof-of-Concept
+# Wrapping Token For DSC Proof-of-Concept
 
 In a Role/Site/AllNodes Configuration, create a wrapping token:
 
-```
+```powershell
 $wrappingToken = $(New-VaultWrappedToken -WrapTimeToLive "25h" -WrapPolicies "log-rotation" -JustWrapInfo).token
 ```
 
@@ -414,7 +420,7 @@ Provide the following attributes to the `New-VaultWrappedToken`:
 
 Next, create a `File` DSC Resource, whereby the `$wrappingToken` is written to disk:
 
-```
+```powershell
 File "LogRotationWrappingToken" {
     DestinationPath = "C:\Windows\Temp\LogRotationWrappingToken.txt" 
     Ensure          = 'Present'
@@ -425,7 +431,7 @@ File "LogRotationWrappingToken" {
 
 The one-time use token will be retrieved from disk and used by some scheduled task, process or service to acquire a more permanent (renewable) token to use to authenticate to Hashicorp Vault. Consider the following code block, which might be used in a scheduled task to retrieve the initial wrapping token from disk, and use it to acquire a renewable token with rights to perform an action (in this case, rotating the Vault Audit Log):
 
-```
+```powershell
 New-EventLog -LogName Application -Source "HashicorpVault-LogRotation" -ErrorAction SilentlyContinue
 
 

@@ -1,6 +1,6 @@
 variables:
-  ModuleName: 'vaultUtils'
-  ModuleVersion: '1.2.1'
+  ModuleName: 'psVaultUtils'
+  ModuleVersion: '1.3.0'
   DevRepository: 'dev-windows-modules'
   ProdRepository: 'prod-windows-modules'
   Notification: "it-digest"
