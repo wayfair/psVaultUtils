@@ -41,7 +41,7 @@ function Get-VaultCubbyholeSecret {
         [Parameter(
             Position = 1
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the data should be displayed in the console.
@@ -71,35 +71,21 @@ function Get-VaultCubbyholeSecret {
             throw
         }
 
-        switch ($OutputType) {
-            'Json' {
-                if ($JustData) {
-                    if ($MetaData) {
-                        $result.data | ConvertTo-Json
-                    }
-                    else {
-                        $result.data | ConvertTo-Json
-                    }
-                }
-                else {
-                    $result | ConvertTo-Json
-                }
-            }
-
-            'PSObject' {
-                if ($JustData) {
-                    if ($MetaData) {
-                        $result.data
-                    }
-                    else {
-                        $result.data
-                    }
-                }
-                else {
-                    $result
-                }
-            }
+        if ($MetaData) {
+            $dataType = 'secret_metadata'
         }
+        else {
+            $dataType = 'secret_data'
+        }
+
+        $formatParams = @{
+            InputObject = $result
+            DataType    = $dataType
+            JustData    = $JustData.IsPresent
+            OutputType  = $OutputType
+        }
+
+        Format-VaultOutput @formatParams
     }
 
     end {

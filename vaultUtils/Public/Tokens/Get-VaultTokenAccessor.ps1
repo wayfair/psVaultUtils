@@ -16,10 +16,10 @@ function Get-VaultTokenAccessor {
     renewable      : False
     lease_duration : 0
     data           : @{accessor=uJDuXRNGtBttnkmh3ZJu285K; creation_time=1562012821; creation_ttl=129600;
-                    display_name=ldap-dev-bsmall; entity_id=357f788d-75cf-c16d-f6d9-cdbd6c5deee8;
+                    display_name=ldap-dev-ben.small; entity_id=357f788d-75cf-c16d-f6d9-cdbd6c5deee8;
                     expire_time=2019-07-03T04:27:01.3416702-04:00; explicit_max_ttl=0; external_namespace_policies=; id=;
                     identity_policies=System.Object[]; issue_time=2019-07-01T16:27:01.3416702-04:00; meta=; num_uses=0;
-                    orphan=True; path=auth/ldap/login/dev-bsmall; policies=System.Object[]; renewable=True; ttl=128337;
+                    orphan=True; path=auth/ldap/login/dev-ben.small; policies=System.Object[]; renewable=True; ttl=128337;
                     type=service}
     wrap_info      :
     warnings       :
@@ -31,7 +31,7 @@ function Get-VaultTokenAccessor {
         "accessor":  "uJDuXRNGtBttnkmh3ZJu285K",
         "creation_time":  1562012821,
         "creation_ttl":  129600,
-        "display_name":  "ldap-dev-bsmall",
+        "display_name":  "ldap-dev-ben.small",
         "entity_id":  "357f788d-75cf-c16d-f6d9-cdbd6c5deee8",
         "expire_time":  "2019-07-03T04:27:01.3416702-04:00",
         "explicit_max_ttl":  0,
@@ -45,11 +45,11 @@ function Get-VaultTokenAccessor {
                             ],
         "issue_time":  "2019-07-01T16:27:01.3416702-04:00",
         "meta":  {
-                    "username":  "dev-bsmall"
+                    "username":  "dev-ben.small"
                 },
         "num_uses":  0,
         "orphan":  true,
-        "path":  "auth/ldap/login/dev-bsmall",
+        "path":  "auth/ldap/login/dev-ben.small",
         "policies":  [
                         "default"
                     ],
@@ -72,7 +72,7 @@ function Get-VaultTokenAccessor {
         [Parameter(
             Position = 1
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the token should be displayed in the console.
@@ -109,25 +109,14 @@ function Get-VaultTokenAccessor {
             throw
         }
 
-        switch ($OutputType) {
-            'Json' {
-                if ($JustData) {
-                    $result.data | ConvertTo-Json
-                }
-                else {
-                    $result | ConvertTo-Json
-                }
-            }
-
-            'PSObject' {
-                if ($JustData) {
-                    $result.data
-                }
-                else {
-                    $result
-                }
-            }
+        $formatParams = @{
+            InputObject = $result
+            DataType    = 'data'
+            JustData    = $JustData.IsPresent
+            OutputType  = $OutputType
         }
+
+        Format-VaultOutput @formatParams
     }
 
     end {

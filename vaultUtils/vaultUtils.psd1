@@ -12,7 +12,7 @@
     RootModule = 'vaultUtils.psm1'
     
     # Version number of this module.
-    ModuleVersion = '1.1.6'
+    ModuleVersion = '1.2.1'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -108,7 +108,7 @@
         'Submit-VaultRootTokenGeneration'
         'Unprotect-VaultRootToken'
         
-        'ConvertFrom-Base64'
+        'ConvertTo-Hashtable'
         'ConvertTo-Base64'
         'Get-VaultRandomBytes'
         'Get-VaultDataHash'

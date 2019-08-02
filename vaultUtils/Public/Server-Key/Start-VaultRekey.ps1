@@ -131,12 +131,13 @@ function Start-VaultRekey {
             throw
         }
 
-        if ($OutputType -eq "Json") {
-            $result | ConvertTo-Json
+        $formatParams = @{
+            InputObject = $result
+            JustData    = $false
+            OutputType  = $OutputType
         }
-        else {
-            $result
-        }
+
+        Format-VaultOutput @formatParams
     }
 
     end {

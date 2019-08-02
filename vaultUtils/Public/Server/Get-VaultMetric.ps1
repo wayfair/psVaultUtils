@@ -43,7 +43,7 @@ function Get-VaultMetric {
         [Parameter(
             Position = 0
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just gauges information should be displayed in the console.
@@ -93,27 +93,17 @@ function Get-VaultMetric {
             throw
         }
 
-        switch ($OutputType) {
-            'Json' {
-                switch ($PSCmdlet.ParameterSetName) {
-                    'All'      { $result          | ConvertTo-Json; break }
-                    'Gauges'   { $result.Gauges   | ConvertTo-Json; break }
-                    'Points'   { $result.Points   | ConvertTo-Json; break }
-                    'Counters' { $result.Counters | ConvertTo-Json; break }
-                    'Samples'  { $result.Samples  | ConvertTo-Json; break }
-                }
-            }
-
-            'PSObject' {
-                switch ($PSCmdlet.ParameterSetName) {
-                    'All'      { $result;          break }
-                    'Gauges'   { $result.Gauges;   break }
-                    'Points'   { $result.Points;   break }
-                    'Counters' { $result.Counters; break }
-                    'Samples'  { $result.Samples;  break }
-                }
-            }
+        $formatParams = @{
+            InputObject = $result
+            OutputType  = $OutputType
         }
+
+        if ($PSCmdlet.ParameterSetName -ne 'All') {
+            $formatParams += @{ DataType = "metrics_$($PSCmdlet.ParameterSetName)".ToLower() }
+            $formatParams += @{ JustData = $true }
+        }
+
+        Format-VaultOutput @formatParams
     }
 
     end {

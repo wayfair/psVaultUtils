@@ -92,7 +92,7 @@ function Update-VaultToken {
         [Parameter(
             Position = 3
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the authentication information should be displayed in the console.
@@ -161,25 +161,14 @@ function Update-VaultToken {
                 throw
             }
 
-            switch ($OutputType) {
-                'Json' {
-                    if ($JustAuth) {
-                        $result.auth | ConvertTo-Json
-                    }
-                    else {
-                        $result | ConvertTo-Json
-                    }
-                }
-
-                'PSObject' {
-                    if ($JustAuth) {
-                        $result.auth
-                    }
-                    else {
-                        $result
-                    }
-                }
+            $formatParams = @{
+                InputObject = $result
+                DataType    = 'auth'
+                JustData    = $JustAuth.IsPresent
+                OutputType  = $OutputType
             }
+    
+            Format-VaultOutput @formatParams
         }
         else {
             Write-Error "The specified token is not renewable."

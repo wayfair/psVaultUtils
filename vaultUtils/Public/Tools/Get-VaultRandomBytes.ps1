@@ -55,7 +55,7 @@ function Get-VaultRandomBytes {
         [Parameter(
             Position = 2
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the data should be displayed in the console.
@@ -92,25 +92,14 @@ function Get-VaultRandomBytes {
             throw
         }
 
-        switch ($OutputType) {
-            'Json' {
-                if ($JustData) {
-                    $result.data | Select-Object 'random_bytes' | ConvertTo-Json
-                }
-                else {
-                    $result | ConvertTo-Json
-                }
-            }
-
-            'PSObject' {
-                if ($JustData) {
-                    $result.data
-                }
-                else {
-                    $result
-                }
-            }
+        $formatParams = @{
+            InputObject = $result
+            DataType    = 'random_bytes_data'
+            JustData    = $JustData.IsPresent
+            OutputType  = $OutputType
         }
+
+        Format-VaultOutput @formatParams
     }
 
     end {

@@ -56,7 +56,7 @@ Please provide a single Unseal Key: ********************************************
         [Parameter(
             Position = 1
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'Json'
     )
 
@@ -93,12 +93,13 @@ Please provide a single Unseal Key: ********************************************
             throw
         }
 
-        if ($OutputType -eq "Json") {
-            $result | ConvertTo-Json
+        $formatParams = @{
+            InputObject = $result
+            JustData    = $false
+            OutputType  = $OutputType
         }
-        else {
-            $result
-        }
+
+        Format-VaultOutput @formatParams
     }
 
     end {

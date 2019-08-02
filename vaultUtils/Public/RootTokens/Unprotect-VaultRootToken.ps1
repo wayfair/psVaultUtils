@@ -33,7 +33,7 @@ function Unprotect-VaultRootToken {
         [Parameter(
             Position = 1
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject'
     )
 

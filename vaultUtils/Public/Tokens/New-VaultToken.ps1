@@ -54,10 +54,10 @@ function New-VaultToken {
     PS> $newTokenParams = @{
     >>        RoleName = 'SomeRole'
     >>        Policies = 'jenkinsc02-secret-consumer'
-    >>        MetaData = @{ 'user'='bsmall' }
+    >>        MetaData = @{ 'user'='ben.small' }
     >>        Renewable = $true
     >>        TimeToLive = "48h"
-    >>        DisplayName = "bsmall"
+    >>        DisplayName = "ben.small"
     >>        NumberOfUses = 10
     >>    }
 
@@ -78,7 +78,7 @@ function New-VaultToken {
     * Metadata, which can be found in the audit logs, is associated with the token's actions.
     * The token is renewable
     * It has a lease/ttl of 48 hours.
-    * It has a displayname of "token-bsmall". "token-" is automatically prefixed on the displayname.
+    * It has a displayname of "token-ben.small". "token-" is automatically prefixed on the displayname.
     * The token can be used 10 times within the 48 hours before it expires.
 
 .EXAMPLE
@@ -205,7 +205,7 @@ function New-VaultToken {
         [Parameter(
             Position = 13
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the auth data should be displayed in the console.
@@ -305,25 +305,14 @@ function New-VaultToken {
 
         #region Format Output
 
-        switch ($OutputType) {
-            'Json' {
-                if ($JustAuth) {
-                    $result.auth | ConvertTo-Json
-                }
-                else {
-                    $result | ConvertTo-Json
-                }
-            }
-
-            'PSObject' {
-                if ($JustAuth) {
-                    $result.auth
-                }
-                else {
-                    $result
-                }
-            }
+        $formatParams = @{
+            InputObject = $result
+            DataType    = 'auth'
+            JustData    = $JustAuth.IsPresent
+            OutputType  = $OutputType
         }
+
+        Format-VaultOutput @formatParams
 
         #endregion
     }

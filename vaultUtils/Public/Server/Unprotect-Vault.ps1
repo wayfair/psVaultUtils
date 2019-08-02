@@ -80,7 +80,7 @@ DYNAMIC PARAMETERS
         [Parameter(
             Position = 2
         )]
-        [ValidateSet('Json','PSObject')]
+        [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject'
     )
 
@@ -153,22 +153,19 @@ DYNAMIC PARAMETERS
         }
 
         try {
-            $unsealProgress = Invoke-RestMethod @irmParams
+            $result = Invoke-RestMethod @irmParams
         }
         catch {
             throw
         }
-
-        switch ($OutputType) {
-            "Json" {
-                $unsealProgress | ConvertTo-Json
-            }
-
-            'PSObject' {
-                $unsealProgress
-            }
-        }
         
+        $formatParams = @{
+            InputObject = $result
+            JustData    = $false
+            OutputType  = $OutputType
+        }
+
+        Format-VaultOutput @formatParams
     }
 
     end {
