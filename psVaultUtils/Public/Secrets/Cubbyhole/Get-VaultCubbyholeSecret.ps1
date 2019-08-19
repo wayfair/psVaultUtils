@@ -71,16 +71,9 @@ function Get-VaultCubbyholeSecret {
             throw
         }
 
-        if ($MetaData) {
-            $dataType = 'secret_metadata'
-        }
-        else {
-            $dataType = 'secret_data'
-        }
-
         $formatParams = @{
             InputObject = $result
-            DataType    = $dataType
+            DataType    = 'data' #Cubbyhole secrets do not/cannot have metadata.
             JustData    = $JustData.IsPresent
             OutputType  = $OutputType
         }

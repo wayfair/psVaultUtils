@@ -58,7 +58,7 @@ function New-VaultKVSecret {
     param(
         #Specifies a KV engine to write secrets to.
         [Parameter(
-            Mandatoy = $true,
+            Mandatory = $true,
             Position = 0
         )]
         [String] $Engine,
