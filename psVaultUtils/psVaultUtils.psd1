@@ -4,7 +4,7 @@
     RootModule = 'psVaultUtils.psm1'
     
     # Version number of this module.
-    ModuleVersion = '1.4.5'
+    ModuleVersion = '1.5.0'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -68,6 +68,13 @@
         'Get-VaultSessionVariable'
         'Set-VaultSessionVariable'
         'Clear-VaultSessionVariable'
+
+        'Get-VaultPolicy'
+        'New-VaultPolicy'
+        'New-VaultPolicyDocument'
+        'Remove-VaultPolicy'
+        'Show-VaultPolicy'
+        'Update-VaultPolicy'
 
         'Get-VaultMetric'
         'Get-VaultStatus'
@@ -153,6 +160,8 @@
         'Rewrap-VaultWrapping'
 
         'Renew-VaultToken'
+
+        'List-VaultPolicy'
     )
     
     # DSC resources to export from this module

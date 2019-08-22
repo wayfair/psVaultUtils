@@ -44,4 +44,6 @@ Export-ModuleMember `
         'Rewrap-VaultWrapping'
 
         'Renew-VaultToken'
+
+        'List-VaultPolicy'
     )
