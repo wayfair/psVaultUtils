@@ -229,10 +229,10 @@ function New-VaultPolicyDocument {
             #however, JSON has the limitation of not supporting comments, and additionally the JSON spacing looks terrible.
 
             #Ideally, this code would create a PSObject, convert the PSObject to JSON, then convert the JSON to HCL, and either prepend or append the comment.
-            #Writing a tool to convert JSON to HCL in PowerShell/C#/DotNet to is beyond my capabilities.
+            #Writing a tool to convert JSON to HCL in PowerShell/C#/DotNet is beyond my capabilities.
 
             #This code will remain in the file, but commented out to save someone the legwork of 
-            #rewriting it if Hashicorp should decided to add a tool for converting JSON to HCL and vice versa.
+            #rewriting it if Hashicorp should decided to add a tool/API endpoint for converting JSON to HCL and vice versa.
 
             $payload = [pscustomobject] @{
                 path = [pscustomobject] @{ 
