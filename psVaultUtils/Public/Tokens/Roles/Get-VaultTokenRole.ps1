@@ -1,35 +1,32 @@
-function Show-VaultTokenRole {
+function Get-VaultTokenRole {
 <#
 .Synopsis
-    Retrieves all available token roles.
+    Retrieves information about a specified token role.
 
 .DESCRIPTION
-    Show-VaultTokenRole retrieves all available token roles.
-
-    Show-VaultTokenRole will throw a generic error if there are no roles to list. 
+    Get-VaultTokenRole retrieves information about a token role, given the role name.
 
 .EXAMPLE
-    PS> Show-VaultTokenRole -JustData | Select-Object -ExpandProperty keys
-
-    log-rotate
-    trusted-jenkins-app
-    trusted-dsc-app
-
-    This example demonstrates listing all of the available token roles.
-
-.EXAMPLE
-    PS> Show-VaultTokenRole -OutputType json
+    PS> Get-VaultTokenRole -RoleName 'log-rotate' -OutputType Json
     {
-        "request_id":  "462bf579-0510-92c9-7a72-9a607f05dc3a",
+        "request_id":  "0b88b863-d4bb-bb5e-6c0f-317d73d86cf7",
         "lease_id":  "",
         "renewable":  false,
         "lease_duration":  0,
         "data":  {
-                    "keys":  [
-                                "log-rotate",
-                                "trusted-jenkins-app",
-                                "trusted-dsc-app"
-                            ]
+                    "allowed_policies":  [
+                                            "log-rotation"
+                                        ],
+                    "disallowed_policies":  [
+
+                                            ],
+                    "explicit_max_ttl":  0,
+                    "name":  "log-rotate",
+                    "orphan":  false,
+                    "path_suffix":  "",
+                    "period":  86400,
+                    "renewable":  true,
+                    "token_type":  "default-service"
                 },
         "wrap_info":  null,
         "warnings":  null,
@@ -39,16 +36,22 @@ function Show-VaultTokenRole {
 #>
     [CmdletBinding()]
     param(
-        #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        #Specifies the role whose configuration should be retrieved.
         [Parameter(
             Position = 0
+        )]
+        [String] $RoleName,
+
+        #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        [Parameter(
+            Position = 1
         )]
         [ValidateSet('Json','PSObject','Hashtable')]
         [String] $OutputType = 'PSObject',
 
         #Specifies whether or not just the token roles should be displayed in the console.
         [Parameter(
-            Position = 1
+            Position = 2
         )]
         [Switch] $JustData
     )
@@ -59,13 +62,10 @@ function Show-VaultTokenRole {
 
     process {
         $uri = $global:VAULT_ADDR
-        
-        $body = @{ list = 'true' }
 
         $irmParams = @{
-            Uri    = "$uri/v1/auth/token/roles"
+            Uri    = "$uri/v1/auth/token/roles/$RoleName"
             Header = @{ "X-Vault-Token" = $global:VAULT_TOKEN }
-            Body   = $body
             Method = 'Get'
         }
 
@@ -90,5 +90,3 @@ function Show-VaultTokenRole {
 
     }
 }
-
-Set-Alias -Name 'List-VaultTokenRole' -Value 'Show-VaultTokenRole'

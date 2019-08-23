@@ -168,6 +168,7 @@ function New-VaultToken {
         [Parameter(
             Position = 7
         )]
+        [ValidateScript({ $_ -match "^\d+$|^\d+[smh]$" })]
         [Alias('TTL')]
         [String] $TimeToLive,
 
@@ -175,6 +176,7 @@ function New-VaultToken {
         [Parameter(
             Position = 8
         )]
+        [ValidateScript({ $_ -match "^\d+$|^\d+[smh]$" })]
         [Alias('ExplicitMaxTTL')]
         [String] $ExplicitMaxTimeToLive,
 
@@ -196,6 +198,7 @@ function New-VaultToken {
         [Parameter(
             Position = 11
         )]
+        [ValidateScript({ $_ -match "^\d+$|^\d+[smh]$" })]
         [String] $Period,
 
         #Specifies that the created token should be an orphan (not be the child of a parent token).

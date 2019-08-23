@@ -49,4 +49,5 @@ Export-ModuleMember `
 
         'List-VaultKVSecret'
         'List-VaultTokenAccessor'
+        'List-VaultTokenRole'
     )

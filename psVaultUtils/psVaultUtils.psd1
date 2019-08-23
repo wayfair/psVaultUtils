@@ -65,6 +65,7 @@
     
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
+        #Variable Management
         'Get-VaultSessionVariable'
         'Set-VaultSessionVariable'
         'Clear-VaultSessionVariable'
@@ -76,6 +77,7 @@
         'Show-VaultPolicy'
         'Update-VaultPolicy'
 
+        #Server Management
         'Get-VaultMetric'
         'Get-VaultStatus'
         'Protect-Vault'
@@ -83,6 +85,7 @@
         'Revoke-VaultLeader'
         'Test-VaultHealth'
 
+        #Key/Rekey Management
         'Get-VaultKeyStatus'
         'Get-VaultRekeyProgress'
         'Get-VaultRekeyVerificationProgress'
@@ -92,9 +95,11 @@
         'Submit-VaultRekey'
         'Submit-VaultRekeyVerification'
 
+        #Authentication
         'Get-VaultLoginToken'
         'Set-VaultLoginToken'
 
+        #Token Management
         'Get-VaultToken'
         'New-VaultToken'
         'New-VaultWrappedToken'
@@ -102,16 +107,26 @@
         'Show-VaultTokenRole'
         'Update-VaultToken'
 
+        #Token Role Management
+        'Get-VaultTokenRole'
+        'New-VaultTokenRole'
+        'Remove-VaultTokenRole'
+        'Show-VaultTokenRole'
+        'Update-VaultTokenRole'
+
+        #Token Accessor Management
         'Get-VaultTokenAccessor'
         'Revoke-VaultTokenAccessor'
         'Show-VaultTokenAccessor'
 
+        #Root Token Management
         'Get-VaultRootTokenGenerationProgress'
         'Start-VaultRootTokenGeneration'
         'Stop-VaultRootTokenGeneration'
         'Submit-VaultRootTokenGeneration'
         'Unprotect-VaultRootToken'
         
+        #Tools
         'ConvertFrom-Hashtable'
         'ConvertTo-Hashtable'
         'ConvertTo-Base64'
@@ -119,20 +134,24 @@
         'Get-VaultRandomBytes'
         'Get-VaultDataHash'
 
+        #KV Secret Management
         'New-VaultKVSecret'
         'Get-VaultKVSecret'
         'Remove-VaultKVSecret'
         'Restore-VaultKVSecret'
         'Show-VaultKVSecret'
 
+        #Cubbyhole Secret Management
         'New-VaultCubbyholeSecret'
         'Get-VaultCubbyholeSecret'
         'Update-VaultCubbyholeSecret'
         'Remove-VaultCubbyholeSecret'
 
+        #KV Engine Management
         'Get-VaultKVEngine'
         'Set-VaultKVEngine'
 
+        #Wrapping Tools
         'New-VaultWrapping'
         'Show-VaultWrapping'
         'Get-VaultWrapping'
@@ -168,7 +187,7 @@
 
         'List-VaultKVSecret'
         'List-VaultTokenAccessor'
-
+        'List-VaultTokenRole'
     )
     
     # DSC resources to export from this module
