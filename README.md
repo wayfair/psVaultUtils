@@ -19,6 +19,19 @@ This is my first open source project. Please bear with me while I stumble throug
 * Sets of functions to interact with engines other than _KV_ and _Cubbyhole_ are not currently present.
 * Sets of functions and/or parameters to interact with _enterprise features_ are generally not present.
 
+## Other Limitiations
+* PowerShell 5.1 Invoke-RestMethod does not support the LIST method, which is used by some Vault API endpoints. 
+    * This can be worked around by specifying `-Method GET -Body @{ list = 'true' }` in an Invoke-RestMethod call.
+
+# To-Do / Open Questions
+
+## To-Do
+
+## Questions
+* Is `Show-` the appropriate verb for listing data?
+    * `Show-VaultKVSecret` lists the secret keys given a specified path, while `Get-VaultKVSecret` gets a specific secret.
+    * `Show-VaultWrapping` lists the wrapped secrets available to a token, while `Get-VaultWrapping` unwraps the secrets.
+
 # Verb Mapping // Command Aliases
 
 Hashicorp Vault uses several "verbs", which, according to PowerShell standards are considered unapproved, and make commands less discoverable. 
@@ -63,6 +76,15 @@ The following verb mappings and command alises might actually make a person who 
 * Stop-VaultRekeyVerification --> Cancel-VaultRekeyVerification
 * Stop-VaultRootTokenGeneration --> Cancel-VaultRootTokenGeneration
 * Update-VaultToken --> Renew-VaultToken
+
+## Secret / Token / Accessor Verbs & Command Aliases
+
+* List --> Show
+
+<br>
+
+* Show-VaultKVSecret --> List-VaultKVSecret
+* Show-VaultTokenAccessor --> List-VaultTokenAccessor
 
 # Command Usage
 
