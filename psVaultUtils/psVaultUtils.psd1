@@ -165,12 +165,9 @@
         'Renew-VaultToken'
 
         'List-VaultPolicy'
-<<<<<<< HEAD
-        
         'List-VaultKVSecret'
         'List-VaultTokenAccessor'
-=======
->>>>>>> Functions for interacting with Policies
+
     )
     
     # DSC resources to export from this module
