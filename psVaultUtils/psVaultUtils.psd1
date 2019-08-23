@@ -165,6 +165,7 @@
         'Renew-VaultToken'
 
         'List-VaultPolicy'
+
         'List-VaultKVSecret'
         'List-VaultTokenAccessor'
 
