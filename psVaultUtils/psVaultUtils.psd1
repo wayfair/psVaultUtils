@@ -4,7 +4,7 @@
     RootModule = 'psVaultUtils.psm1'
     
     # Version number of this module.
-    ModuleVersion = '1.6.0'
+    ModuleVersion = '1.7.0'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -70,6 +70,7 @@
         'Set-VaultSessionVariable'
         'Clear-VaultSessionVariable'
 
+        #Policy Management
         'Get-VaultPolicy'
         'New-VaultPolicy'
         'New-VaultPolicyDocument'
