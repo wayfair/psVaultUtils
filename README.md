@@ -4,6 +4,9 @@ psVaultUtils is a module for interacting with Hashicorp Vault.
 # Author
 Ben Small <bsmall@wayfair.com>
 
+## Author's Note
+This is my first open source project. Please bear with me while I stumble through the proper way to manage branches and perform pull requests when external parties are involved. Thank you for your patience.
+
 # Module Limitations
 * LDAP is currently the only supported authentication method besides token authentication, which is implicitly supported. 
 * A function to initialize a new Vault instance/cluster is not currently present.
