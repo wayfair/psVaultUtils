@@ -48,7 +48,7 @@ function Get-VaultDataHash {
         [ValidateSet('Base64','Hex')]
         [String] $Format = 'Base64',
 
-        #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        #Specifies how output information should be displayed in the console. Available options are JSON, PSObject or Hashtable.
         [Parameter(
             Position = 3
         )]
