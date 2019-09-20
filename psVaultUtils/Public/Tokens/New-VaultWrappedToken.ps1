@@ -32,7 +32,10 @@ function New-VaultWrappedToken {
     }
     
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium'
+    )]
     param(
         [Parameter(
             Position = 0
@@ -78,11 +81,13 @@ function New-VaultWrappedToken {
             Method = 'Post'
         }
 
-        try {
-            $result = Invoke-RestMethod @irmParams
-        }
-        catch {
-            throw
+        if ($PSCmdlet.ShouldProcess("$($global:VAULT_ADDR.Replace('https://',''))",'Create Vault-wrapped token')) {
+            try {
+                $result = Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
 
         #endregion

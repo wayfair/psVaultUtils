@@ -22,7 +22,10 @@ function Set-VaultKVEngine {
 
     This command produces no output.
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium'
+    )]
     param(
         #Specifies a KV Engine to modify the properties of.
         [Parameter(
@@ -72,11 +75,13 @@ function Set-VaultKVEngine {
             Method = 'Post'
         }
 
-        try {
-            Invoke-RestMethod @irmParams
-        }
-        catch {
-            throw
+        if ($PSCmdlet.ShouldProcess("$Engine",'Modify KV Engine')) {
+            try {
+                Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
     }
 

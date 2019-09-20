@@ -35,7 +35,10 @@ function New-VaultWrapping {
     warnings       :
     auth           :
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium'
+    )]
     param(
         #Specifies one or more key-values pairs of data to wrap.
         [Parameter(
@@ -95,11 +98,13 @@ function New-VaultWrapping {
             Body   = $($jsonPayload | ConvertFrom-Json | ConvertTo-Json -Compress)
         }
 
-        try {
-            $result = Invoke-RestMethod @irmParams
-        }
-        catch {
-            throw
+        if ($PSCmdlet.ShouldProcess("$($global:VAULT_ADDR.Replace('https://',''))",'Create Vault wrapping')) {
+            try {
+                $result = Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
 
         $formatParams = @{

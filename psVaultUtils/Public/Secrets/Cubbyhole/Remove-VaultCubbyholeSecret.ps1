@@ -12,7 +12,10 @@ function Remove-VaultCubbyholeSecret {
     This command does not produce any output.
 
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'High'
+    )]
     param(
         #Specifies the secrets path to retrieve secrets from.
         [Parameter(
@@ -34,11 +37,13 @@ function Remove-VaultCubbyholeSecret {
             Method = 'Delete'
         }
 
-        try {
-            Invoke-RestMethod @irmParams
-        }
-        catch {
-            throw
+        if ($PSCmdlet.ShouldProcess("$SecretsPath",'Remove cubbyhole secret')) {
+            try {
+                Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
     }
 

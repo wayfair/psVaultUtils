@@ -114,7 +114,10 @@ function New-VaultToken {
     * The token is not renewable, and has a default lease/ttl.
 
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium'
+    )]
     param(
         #Specifies the ID of the client token. This parameter can only be specified if VAULT_TOKEN is a root token; It will otherwise be ignored.
         [Parameter(
@@ -294,11 +297,13 @@ function New-VaultToken {
             Method = 'Post'
         }
 
-        try {
-            $result = Invoke-RestMethod @irmParams
-        }
-        catch {
-            throw
+        if ($PSCmdlet.ShouldProcess("$($global:VAULT_ADDR.Replace('https://',''))",'Create Vault token')) {
+            try {
+                $result = Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
 
         #endregion

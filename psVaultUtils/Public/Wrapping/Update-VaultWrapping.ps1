@@ -23,7 +23,10 @@ function Update-VaultWrapping {
     warnings       :
     auth           :
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium'   
+    )]
     param(
         #Specifies a token whose wrapped data should be rewrapped.
         [Parameter(
@@ -65,11 +68,13 @@ function Update-VaultWrapping {
             Body   = $($jsonPayload | ConvertFrom-Json | ConvertTo-Json -Compress)
         }
 
-        try {
-            $result = Invoke-RestMethod @irmParams
-        }
-        catch {
-            throw
+        if ($PSCmdlet.ShouldProcess("$Token",'Update Vault wrapping')) {
+            try {
+                $result = Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
 
         $formatParams = @{

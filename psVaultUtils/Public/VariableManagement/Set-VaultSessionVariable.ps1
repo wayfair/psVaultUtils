@@ -38,7 +38,10 @@ function Set-VaultSessionVariable {
 
     This example demonstrates specifying a consul DNS entry. Note that 'https://' is missing from the value.
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium'
+    )]
     param(
         #Specifies a full URL to access Vault. Accepts a consul URL.
         [Parameter(
@@ -77,80 +80,85 @@ function Set-VaultSessionVariable {
 
         #region Handle Credential // Login Method
 
-        $global:VAULT_LOGIN_METHOD = $LoginMethod
-
-        if ($Credential) {
-            $global:VAULT_CRED = $Credential
-            Write-Verbose 'Cred specified'
+        if ($PSCmdlet.ShouldProcess('$global:VAULT_LOGIN_METHOD','Assign Vault login method')) {
+            $global:VAULT_LOGIN_METHOD = $LoginMethod
         }
-        elseif ((-not $Credential) -and (-not $global:VAULT_CRED)) {
-            [PSCredential] $Credential = Get-Credential -Message "Please specify credentials to log into Hashicorp Vault:"
-            $global:VAULT_CRED = $Credential
 
-            Write-verbose "no cred and no global cred"
+        if ($PSCmdlet.ShouldProcess('$global:VAULT_CRED','Assign Vault credential')) {
+            if ($Credential) {
+                $global:VAULT_CRED = $Credential
+            }
+            elseif ((-not $Credential) -and (-not $global:VAULT_CRED)) {
+                [PSCredential] $Credential = Get-Credential -Message "Please specify credentials to log into Hashicorp Vault:"
+                $global:VAULT_CRED = $Credential
+            }
         }
 
         #endregion
 
         #region Intelligently Handle VaultURL
 
-        if ($VaultURL -match "consul") {
-            if (($VaultURL -match "https://") -or ($VaultURL -match "http://")) {
-                $url = [System.Uri]($VaultURL)
+        if ($PSCmdlet.ShouldProcess('$global:VAULT_ADDR, $global:VAULT_ADDR_STANDBY','Assign Vault addresses')) {
+            if ($VaultURL -match "consul") {
+                if (($VaultURL -match "https://") -or ($VaultURL -match "http://")) {
+                    $url = [System.Uri]($VaultURL)
 
-                $activeUrl  = 'https://active.'  + $url.Host
-                $standbyUrl = 'https://standby.' + $url.Host 
+                    $activeUrl  = 'https://active.'  + $url.Host
+                    $standbyUrl = 'https://standby.' + $url.Host 
+                }
+                else {
+                    $activeUrl  = 'https://active.'  + $VaultURL
+                    $standbyUrl = 'https://standby.' + $VaultURL 
+                }
             }
             else {
-                $activeUrl  = 'https://active.'  + $VaultURL
-                $standbyUrl = 'https://standby.' + $VaultURL 
+                if (($VaultURL -match "https://") -or ($VaultURL -match "http://")) {
+                    $url = [System.Uri]($VaultURL)
+
+                    $dnsResult = Resolve-DnsName $url.Host -Type 'Cname' -ErrorAction 'SilentlyContinue' | 
+                        Select-Object -ExpandProperty 'NameHost'
+
+                    $activeUrl  = 'https://active.'  + $dnsResult
+                    $standbyUrl = 'https://standby.' + $dnsResult
+                }
+                else {
+                    $dnsResult = Resolve-DnsName $VaultURL -Type 'Cname' -ErrorAction 'SilentlyContinue' | 
+                        Select-Object -ExpandProperty 'NameHost'
+
+                    $activeUrl  = 'https://active.'  + $dnsResult
+                    $standbyUrl = 'https://standby.' + $dnsResult
+                }
             }
+
+            $global:VAULT_ADDR         = $activeUrl
+            $global:VAULT_ADDR_STANDBY = $standbyUrl
         }
-        else {
-            if (($VaultURL -match "https://") -or ($VaultURL -match "http://")) {
-                $url = [System.Uri]($VaultURL)
-
-                $dnsResult = Resolve-DnsName $url.Host -Type 'Cname' -ErrorAction 'SilentlyContinue' | 
-                    Select-Object -ExpandProperty 'NameHost'
-
-                $activeUrl  = 'https://active.'  + $dnsResult
-                $standbyUrl = 'https://standby.' + $dnsResult
-            }
-            else {
-                $dnsResult = Resolve-DnsName $VaultURL -Type 'Cname' -ErrorAction 'SilentlyContinue' | 
-                    Select-Object -ExpandProperty 'NameHost'
-
-                $activeUrl  = 'https://active.'  + $dnsResult
-                $standbyUrl = 'https://standby.' + $dnsResult
-            }
-        }
-
-        $global:VAULT_ADDR         = $activeUrl
-        $global:VAULT_ADDR_STANDBY = $standbyUrl
 
         #endregion
 
         #region Get Underlying Vault hosts
 
-        $global:VAULT_NODES = @()
+        if ($PSCmdlet.ShouldProcess('$global:VAULT_NODES','Assign Vault nodes')) {
+            $global:VAULT_NODES = @()
 
-        $global:VAULT_NODES += $([System.Uri]($activeUrl)) | 
-            Select-Object -ExpandProperty 'Host' | 
-                Resolve-DnsName -ErrorAction 'SilentlyContinue' |
-                    Where-Object QueryType -eq 'A' | 
-                        Select-Object -ExpandProperty Name
+            $global:VAULT_NODES += $([System.Uri]($activeUrl)) | 
+                Select-Object -ExpandProperty 'Host' | 
+                    Resolve-DnsName -ErrorAction 'SilentlyContinue' |
+                        Where-Object QueryType -eq 'A' | 
+                            Select-Object -ExpandProperty 'Name'
 
-        $global:VAULT_NODES += $([System.Uri]($standbyUrl)) |
-            Select-Object -ExpandProperty 'Host' | 
-                Resolve-DnsName -ErrorAction 'SilentlyContinue' |
-                    Where-Object QueryType -eq 'A' | 
-                        Select-Object -ExpandProperty Name
+            $global:VAULT_NODES += $([System.Uri]($standbyUrl)) |
+                Select-Object -ExpandProperty 'Host' | 
+                    Resolve-DnsName -ErrorAction 'SilentlyContinue' |
+                        Where-Object QueryType -eq 'A' | 
+                            Select-Object -ExpandProperty 'Name'
+
+            if ($Passthru) {
+                Get-VaultSessionVariable
+            }
+        }
 
         #endregion
-
-        if ($Passthru) {
-            Get-VaultSessionVariable
-        }
     }
 
     end {

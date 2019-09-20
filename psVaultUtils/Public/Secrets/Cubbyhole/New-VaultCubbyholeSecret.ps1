@@ -16,7 +16,10 @@ function New-VaultCubbyholeSecret {
     This command does not produce any output.
 
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium'
+    )]
     param(
         #Specifies the cubbyhole secret path to write a secret to.
         [Parameter(
@@ -56,11 +59,13 @@ function New-VaultCubbyholeSecret {
             Body   = $($jsonPayload | ConvertFrom-Json | ConvertTo-Json -Compress)
         }
 
-        try {
-            Invoke-RestMethod @irmParams
-        }
-        catch {
-            throw
+        if ($PSCmdlet.ShouldProcess("$SecretsPath",'Create cubbyhole secret')) {
+            try {
+                Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
     }
 
@@ -69,4 +74,4 @@ function New-VaultCubbyholeSecret {
     }
 }
 
-Set-Alias -Name 'Update-VaultCubbyholeSecret' -Value 'New-VaultCubbyholeSecret.ps1'
+Set-Alias -Name 'Update-VaultCubbyholeSecret' -Value 'New-VaultCubbyholeSecret'
