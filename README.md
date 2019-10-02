@@ -600,7 +600,7 @@ vault.exe audit enable file file_path=\\server.domain.tld\share\vault_audit_logs
 ```
 
 In this example:
-1. Although not explicitly shown, we rely on and import the `CredentialManager` module.
+1. Although not explicitly shown, this example relies on and imports the `CredentialManager` module.
 2. We define a `TemporaryTokenLocation` and a `VAULT_ADDR` and then use the temporary token to retrieve the wrapped token.
 3. We attempt to get an existing renewable token from the CredentialManager and then check that it is valid (not expired) in Vault. We assign that value, if it exists, to `$global:VAULT_TOKEN`.
 4. We switch on TRUE over four cases:
