@@ -29,7 +29,7 @@ function Show-VaultWrapping {
         )]
         [String] $Token,
 
-        #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        #Specifies how output information should be displayed in the console. Available options are JSON, PSObject or Hashtable.
         [Parameter(
             Position = 1
         )]

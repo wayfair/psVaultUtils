@@ -1,7 +1,42 @@
 function Format-VaultOutput {
+<#
+.Synopsis
+    Formats the result of Invoke-RestMethod call to Hashicorp Vault as a PSObject, Json String or Hashtable.
+
+.DESCRIPTION
+    Format-VaultOutput returns Vault data as a PSObject, Json String or Hashtable, depending on data type and data output specified by parent functions.
+
+.EXAMPLE
+    PS> $result
+
+    request_id     : a916aa7e-4d25-4600-d059-cb5c901676f0
+    lease_id       :
+    renewable      : False
+    lease_duration : 0
+    data           : @{data=; metadata=}
+    wrap_info      :
+    warnings       :
+    auth           :
+
+    PS> $formatParams = @{
+>>          InputObject = $result
+>>          DataType    = 'secret_data'
+>>          JustData    = $true
+>>          OutputType  = 'Json'
+>>      }
+
+    PS> Format-VaultOutput $formatParams
+    {
+        "DOMAIN\sa_serviceAccount":  "s0mePassword!!"
+    }
+
+
+#>
     param(
+        #Specifies the result of an Invoke-RestMethod call to a Hashicorp Vault instance.
         $InputObject,
 
+        #Specifies a data type to assist with correctly accessing relevant properties when a -JustData parameter is passed.
         [ValidateSet(
             'wrap_info',
             'data',
@@ -14,14 +49,17 @@ function Format-VaultOutput {
             'metrics_samples',
             'login_token_data',
             'hash_data',
-            'random_bytes_data'
+            'random_bytes_data',
+            'policy_data'
         )]
         [AllowNull()]
         [String] $DataType = $null,
 
+        #Specifies how output information should be displayed in the console. Available options are JSON, PSObject or Hashtable.
         [ValidateSet('PSObject','Json','Hashtable')]
         [String] $OutputType,
 
+        #Specifies whether or not just the data should be displayed in the console.
         [Bool] $JustData
     )
 
@@ -37,70 +75,69 @@ function Format-VaultOutput {
                     #being specified in Get-VaultWrapping: 
                     #Vault-wrapped token from New-VaultWrappedToken vs wrapping token from New-VaultWrapping.
                     if ($null -eq $InputObject.wrap_info) {
-                        $expression = '$InputObject.auth'
+                        $command = { $InputObject.auth }
                     }
                     else {
-                        $expression = '$InputObject.wrap_info'
+                        $command = { $InputObject.wrap_info }
                     }
                 }
 
                 'data' {
-                    $expression = '$InputObject.data'
+                    $command = { $InputObject.data }
                 }
 
                 'auth' {
-                    $expression = '$InputObject.auth'
+                    $command = { $InputObject.auth }
                 }
                 
                 'secret_data' {
-                    $expression = '$InputObject.data.data'
+                    $command = { $InputObject.data.data }
                 }
                 
                 'secret_metadata' {
-                    $expression = '$InputObject.data'
+                    $command = { $InputObject.data }
                 }
 
                 'metrics_gauges' {
-                    $expression = '$InputObject.Gauges'
+                    $command = { $InputObject.Gauges }
                 }
 
                 'metrics_points' {
-                    $expression = '$InputObject.Points'
+                    $command = { $InputObject.Points }
                 }
 
                 'metrics_counters' {
-                    $expression = '$InputObject.Counters'
+                    $command = { $InputObject.Counters }
                 }
 
                 'metrics_samples' {
-                    $expression = '$InputObject.Samples'
+                    $command = { $InputObject.Samples }
                 }
 
                 'login_token_data' {
-                    $expression = '$InputObject.auth | Select-Object client_token'
+                    $command = { $InputObject.auth | Select-Object 'client_token' }
                 }
 
                 'hash_data' {
-                    $expression = '$InputObject.data | Select-Object sum'
+                    $command = { $InputObject.data | Select-Object 'sum' }
                 }
 
                 'random_bytes_data' {
-                    $expression = '$InputObject.data | Select-Object random_bytes'
+                    $command = { $InputObject.data | Select-Object 'random_bytes' }
                 }
             }
     
-    
             switch ($OutputType) {
                 'PSObject' {
-                    Invoke-Expression $expression
+                    Invoke-Command -ScriptBlock $command
                 }
     
                 'Json' {
-                    Invoke-Expression $expression | ConvertTo-Json
+                    Invoke-Command -ScriptBlock $command | ConvertTo-Json
                 }
 
                 'Hashtable' {
-                    Invoke-Expression $expression | ConvertTo-Hashtable
+                    Invoke-Command -ScriptBlock $command | ConvertTo-Hashtable
                 }
             }
         }

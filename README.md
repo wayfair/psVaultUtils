@@ -2,7 +2,7 @@
 psVaultUtils is a module for interacting with Hashicorp Vault.
 
 # Author
-Ben Small <bsmall@wayfair.com>
+Ben Small `bsmall[at]wayfair.com`
 
 ## Author's Note
 This is my first open source project. Please bear with me while I stumble through the proper way to manage branches and perform pull requests when external parties are involved. Thank you for your patience.
@@ -220,7 +220,7 @@ auth           : @{client_token=s.tOZMiBe0WkpZ4NeUCXKdrvVA; accessor=kQdhTOrp5IE
 ```powershell
 PS> $newTokenParams = @{
 >>      RoleName = 'SomeRole'
->>      Policies = 'jenkinsc02-secret-consumer'
+>>      Policies = 'jenkins-secret-consumer'
 >>      MetaData = @{ 'user'='ben.small' }
 >>      Renewable = $true
 >>      TimeToLive = "48h"
@@ -600,13 +600,13 @@ vault.exe audit enable file file_path=\\server.domain.tld\share\vault_audit_logs
 ```
 
 In this example:
-0. Although not explicitly shown, we rely on and import the `CredentialManager` module.
-1. We define a `TemporaryTokenLocation` and a `VAULT_ADDR` and then use the temporary token to retrieve the wrapped token.
-2. We attempt to get an existing renewable token from the CredentialManager and then check that it is valid (not expired) in Vault. We assign that value, if it exists, to `$global:VAULT_TOKEN`.
-3. We switch on TRUE over four cases:
+1. Although not explicitly shown, this example relies on and imports the `CredentialManager` module.
+2. We define a `TemporaryTokenLocation` and a `VAULT_ADDR` and then use the temporary token to retrieve the wrapped token.
+3. We attempt to get an existing renewable token from the CredentialManager and then check that it is valid (not expired) in Vault. We assign that value, if it exists, to `$global:VAULT_TOKEN`.
+4. We switch on TRUE over four cases:
     1. Case where the wrapping token is valid and an existing token lives in the credential manager. In this scenario we overwrite the new unwrapped token with the one that lives in the CredentialManager.
     2. Case where the wrapped token has already been retrieved once and an existing token already exists. In this scenario we attempt to renew the existing token. Conditional logic exists to report a failure if the token cannot be renewed.
     3. Case where the wrapping token is valid and there is no existing token in the CredentialManager; In this scenario we add the wrapped token to the CredentialManager Vault.
     4. Case where the wrapping token is invalid (has been used) and there is no valid, existing token in the CredentialManager. In this scenario the token may have been tampered with. Logic can be written to alert on this scenario.
-4. Provided that we've hit cases 1, 2 or 3, we can proceed to re-acquire the new/renewed "permanent" token from the CredentialManager. 
-5. We then use the token to disable and re-enable the Vault Audit Log Device "File".
+5. Provided that we've hit cases 1, 2 or 3, we can proceed to re-acquire the new/renewed "permanent" token from the CredentialManager. 
+6. We then use the token to disable and re-enable the Vault Audit Log Device "File".

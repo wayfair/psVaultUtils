@@ -53,7 +53,7 @@ function New-VaultWrapping {
         [ValidateScript({ $_ -match "^\d+$|^\d+[smh]$" })]
         [String] $WrapTTL = "24h",
 
-        #Specifies how output information should be displayed in the console. Available options are JSON or PSObject.
+        #Specifies how output information should be displayed in the console. Available options are JSON, PSObject or Hashtable.
         [Parameter(
             Position = 2
         )]
