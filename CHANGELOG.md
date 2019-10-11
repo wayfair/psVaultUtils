@@ -21,7 +21,6 @@
 * Removes errant Write-Verbose calls.
 
 ### 1.4.3
-* Documentation Updates, Bug Fix, Formatting/Grammar
 * Replaces Invoke-Expression calls in Format-VaultOutput with Invoke-Command. Replaces expressions with ScriptBlocks.
 * Fixes a formatting issue in the README.
 * Replaces bsmall email address with anti-bot email address formatting.
