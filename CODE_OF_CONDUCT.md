@@ -1,4 +1,4 @@
-# Contributor Covenant Code of Conduct
+# psVaultUtils Code of Conduct
 
 ## Our Pledge
 
