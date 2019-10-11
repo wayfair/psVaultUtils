@@ -9,8 +9,8 @@ function Show-VaultPolicy {
 .EXAMPLE
     PS> Show-VaultPolicy
 
-    keys           : {default, dsc-secret-consumer, jenkinsc01-secret-consumer, jenkinsc02-secret-consumer...}
-    policies       : {default, dsc-secret-consumer, jenkinsc01-secret-consumer, jenkinsc02-secret-consumer...}
+    keys           : {default, dsc-secret-consumer, jenkins-secret-consumer...}
+    policies       : {default, dsc-secret-consumer, jenkins-secret-consumer...}
     request_id     : b871c03e-9760-6774-5c83-4e274dd2cfee
     lease_id       :
     renewable      : False
