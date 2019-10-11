@@ -6,7 +6,7 @@
 ### 1.6.0
 * Adds support for functions that query Vault API endpoints that utilize the LIST method.
   * Adds Show-VaultTokenAccessor, a command that lists all active token accessors.
-  * Adds Show-VaultKVSecret, a command presents a list of key names at a specified Vault secret path.
+  * Adds Show-VaultKVSecret, a command that presents a list of key names at a specified Vault secret path.
 * Updates the README with information noting the Invoke-RestMethod limitation of not having a LIST method.
 * Updates the README with information about the Show --> List aliasing.
 * Updates the module manifest with new functions and aliases.
