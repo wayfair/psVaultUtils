@@ -37,7 +37,10 @@ function New-VaultPolicyDocument {
 
     This example demonstrates first building a policy document, and then specifying it when creating a new policy.
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium'
+    )]
     [OutputType([String])]
     param(
         #Specifies the path that will policy will be created for.
@@ -232,7 +235,7 @@ function New-VaultPolicyDocument {
             #Writing a tool to convert JSON to HCL in PowerShell/C#/DotNet is beyond my capabilities.
 
             #This code will remain in the file, but commented out to save someone the legwork of 
-            #rewriting it if Hashicorp should decided to add a tool/API endpoint for converting JSON to HCL and vice versa.
+            #rewriting it if Hashicorp should decide to add a tool/API endpoint for converting JSON to HCL and vice versa.
 
             $payload = [pscustomobject] @{
                 path = [pscustomobject] @{ 
@@ -296,7 +299,9 @@ path "$PolicyPath" {
 
         #endregion
 
-        Write-Output $policyPayload.TrimStart()
+        if ($PSCmdlet.ShouldProcess("$PolicyPath",'Create Vault policy document')) {
+            Write-Output $policyPayload.TrimStart()
+        }
     }
 
     end {

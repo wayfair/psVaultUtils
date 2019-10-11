@@ -26,7 +26,10 @@ function New-VaultPolicy {
 
     This example demonstates using New-VaultPolicyDocument to generate two policy documents, which are then specified in the New-VaultPolicy call.
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium' 
+    )]
     param(
         #Specifies the name of a policy to create.
         [Parameter(
@@ -70,11 +73,13 @@ function New-VaultPolicy {
             Body   = $($policyObj | ConvertTo-Json -Compress)
         }
 
-        try {
-            Invoke-RestMethod @irmParams
-        }
-        catch {
-            throw
+        if ($PSCmdlet.ShouldProcess("policy/$PolicyName",'Create Vault policy')) {
+            try {
+                Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
     }
 
