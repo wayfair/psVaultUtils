@@ -92,7 +92,6 @@ function ConvertTo-PSCredential {
                 (ConvertTo-SecureString ($result.Values[0]) -AsPlainText -Force)
             )
         }
-        
     }
 
     end {

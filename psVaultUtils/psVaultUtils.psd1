@@ -4,7 +4,7 @@
     RootModule = 'psVaultUtils.psm1'
     
     # Version number of this module.
-    ModuleVersion = '1.4.5'
+    ModuleVersion = '1.5.1'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -25,7 +25,7 @@
     # Description = ''
     
     # Minimum version of the Windows PowerShell engine required by this module
-    PowerShellVersion = '3.0'
+    PowerShellVersion = '5.1'
     
     # Name of the Windows PowerShell host required by this module
     # PowerShellHostName = ''
@@ -68,6 +68,13 @@
         'Get-VaultSessionVariable'
         'Set-VaultSessionVariable'
         'Clear-VaultSessionVariable'
+
+        'Get-VaultPolicy'
+        'New-VaultPolicy'
+        'New-VaultPolicyDocument'
+        'Remove-VaultPolicy'
+        'Show-VaultPolicy'
+        'Update-VaultPolicy'
 
         'Get-VaultMetric'
         'Get-VaultStatus'
@@ -153,6 +160,8 @@
         'Rewrap-VaultWrapping'
 
         'Renew-VaultToken'
+
+        'List-VaultPolicy'
     )
     
     # DSC resources to export from this module

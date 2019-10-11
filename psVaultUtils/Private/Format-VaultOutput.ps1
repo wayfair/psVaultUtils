@@ -125,6 +125,10 @@ function Format-VaultOutput {
                 'random_bytes_data' {
                     $command = { $InputObject.data | Select-Object 'random_bytes' }
                 }
+
+                'policy_data' {
+                    $expression = '$InputObject.data | Select-Object policies'
+                }
             }
     
             switch ($OutputType) {

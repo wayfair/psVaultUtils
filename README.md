@@ -11,7 +11,6 @@ This is my first open source project. Please bear with me while I stumble throug
 * LDAP is currently the only supported authentication method besides token authentication, which is implicitly supported. 
 * A function to initialize a new Vault instance/cluster is not currently present.
 * Sets of functions to interact with engines other than _KV_ and _Cubbyhole_ are not currently present.
-* Sets of functions to interact with policies are not currently present.
 * Sets of functions and/or parameters to interact with _enterprise features_ are generally not present.
 
 # Verb Mapping // Command Aliases
