@@ -32,7 +32,7 @@
 
 ## Released
 
-## 1.4.2
+### 1.4.2
 
 * First public release.
 * Removes Wayfair-specific code from repository.
