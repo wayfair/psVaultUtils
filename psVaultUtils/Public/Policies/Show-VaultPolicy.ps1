@@ -25,8 +25,7 @@ function Show-VaultPolicy {
     
     default
     dsc-secret-consumer
-    jenkinsc01-secret-consumer
-    jenkinsc02-secret-consumer
+    jenkins-secret-consumer
     log-rotation
     operator
     root
