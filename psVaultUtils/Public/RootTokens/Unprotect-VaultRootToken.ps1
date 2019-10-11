@@ -27,6 +27,8 @@ function Unprotect-VaultRootToken {
         #Specifies an encoded root token.
         [String] $EncodedRootToken,
 
+        #Specifies the one-time-password that was generated when the root token generation was started. 
+        #Without this value, the root token cannot be unprotected.
         [String] $Otp,
 
         #Specifies how output information should be displayed in the console. Available options are JSON, PSObject or Hashtable.
