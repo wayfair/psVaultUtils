@@ -61,7 +61,9 @@ function Update-VaultToken {
     This example demonstrates that it is currently not possible to extend the lease/ttl of an LDAP-based token.
 #>
     [CmdletBinding(
-        DefaultParameterSetName = 'bySelf'
+        DefaultParameterSetName = 'bySelf',
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium'
     )]
     param(
         #Specifies a token whose lease should be updated.
@@ -153,12 +155,13 @@ function Update-VaultToken {
                 $irmParams += @{ Body = $($jsonPayload | ConvertFrom-Json | ConvertTo-Json -Compress) }
             }
 
-
-            try {
-                $result = Invoke-RestMethod @irmParams
-            }
-            catch {
-                throw
+            if ($PSCmdlet.ShouldProcess("$($getToken | Find-VaultToken)",'Update Vault token')) {
+                try {
+                    $result = Invoke-RestMethod @irmParams
+                }
+                catch {
+                    throw
+                }
             }
 
             $formatParams = @{

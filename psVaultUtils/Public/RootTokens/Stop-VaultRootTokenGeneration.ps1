@@ -13,7 +13,10 @@ function Stop-VaultRootTokenGeneration {
     This command does not require any parameters and does not produce any outout.
 
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'High' 
+    )]
     param()
 
     begin {
@@ -29,11 +32,13 @@ function Stop-VaultRootTokenGeneration {
             Method = 'Delete'
         }
 
-        try {
-            Invoke-RestMethod @irmParams
-        }
-        catch {
-            throw
+        if ($PSCmdlet.ShouldProcess("$($global:VAULT_ADDR.Replace('https://',''))",'Stop root token generation')) {
+            try {
+                Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
     }
 

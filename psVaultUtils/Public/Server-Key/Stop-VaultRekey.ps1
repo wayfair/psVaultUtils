@@ -12,7 +12,10 @@ function Stop-VaultRekey {
     This command does not require any parameters or produce any output.
 
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'High'
+    )]
     param()
 
     begin {
@@ -28,11 +31,13 @@ function Stop-VaultRekey {
             Method = 'Delete'
         }
 
-        try {
-            Invoke-RestMethod @irmParams
-        }
-        catch {
-            throw
+        if ($PSCmdlet.ShouldProcess("$($global:VAULT_ADDR.Replace('https://',''))",'Stop Vault re-key')) {
+            try {
+                Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
     }
 

@@ -22,7 +22,10 @@ function Stop-VaultRekeyVerification {
     This command does not require any parameters.
 
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'High'
+    )]
     param()
 
     begin {
@@ -36,6 +39,15 @@ function Stop-VaultRekeyVerification {
             Uri    = "$uri/v1/sys/rekey/verify"
             Header = @{ "X-Vault-Token" = $global:VAULT_TOKEN }
             Method = 'Delete'
+        }
+
+        if ($PSCmdlet.ShouldProcess("$($global:VAULT_ADDR.Replace('https://',''))",'Stop Vault re-key verification')) {
+            try {
+                Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
 
         try {

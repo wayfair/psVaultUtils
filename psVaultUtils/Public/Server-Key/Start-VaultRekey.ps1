@@ -22,7 +22,10 @@ function Start-VaultRekey {
     verification_required : True
     
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium'
+    )]
     param(
         #Specifies the number of shares to split the master key into.
         [Parameter(
@@ -124,11 +127,13 @@ function Start-VaultRekey {
             Body   = $jsonPayload
         }
 
-        try {
-            $result = Invoke-RestMethod @irmParams
-        }
-        catch {
-            throw
+        if ($PSCmdlet.ShouldProcess("$($global:VAULT_ADDR.Replace('https://',''))",'Initiate Vault re-key')) {
+            try {
+                $result = Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
 
         $formatParams = @{

@@ -22,7 +22,10 @@ function Start-VaultRootTokenGeneration {
     otp_length         : 26
 
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium'  
+    )]
     param(
         #Specifies a Base64-encoded PGP public key. 
         #The raw bytes of the token will be encrypted with this value before being returned to the final unseal key provider.
@@ -65,11 +68,13 @@ function Start-VaultRootTokenGeneration {
             $irmParams += @{ Body = $($jsonPayload | ConvertFrom-Json | ConvertTo-Json -Compress) }
         }
 
-        try {
-            $result = Invoke-RestMethod @irmParams
-        }
-        catch {
-            throw
+        if ($PSCmdlet.ShouldProcess("$($global:VAULT_ADDR.Replace('https://',''))",'Attempt root token generation')) {
+            try {
+                $result = Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
 
         $formatParams = @{

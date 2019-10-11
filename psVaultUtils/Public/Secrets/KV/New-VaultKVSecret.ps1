@@ -54,7 +54,10 @@ function New-VaultKVSecret {
     This example demonstrates a scenario where multiple KV pairs are added to 'dsc' engine at path 'new_path/subpath/subsubpath'
     CheckAndSet needs to be specified as 1 because a version of KV information already exists at this path.
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium'
+    )]
     param(
         #Specifies a KV engine to write secrets to.
         [Parameter(
@@ -128,11 +131,13 @@ function New-VaultKVSecret {
             Body   = $($jsonPayload | ConvertFrom-Json | ConvertTo-Json -Compress)
         }
 
-        try {
-            $result = Invoke-RestMethod @irmParams
-        }
-        catch {
-            throw
+        if ($PSCmdlet.ShouldProcess("$Engine/$SecretsPath",'Create KV secret')) {
+            try {
+                $result = Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
 
         $formatParams = @{

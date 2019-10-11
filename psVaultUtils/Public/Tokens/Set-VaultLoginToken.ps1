@@ -21,7 +21,10 @@ function Set-VaultLoginToken {
 
     This command does not produce any output.
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium'
+    )]
     param(
         #Specifies a vault token to assign to VAULT_TOKEN.
         [Parameter(
@@ -43,10 +46,12 @@ function Set-VaultLoginToken {
     }
 
     process {
-        $global:VAULT_TOKEN = $Token | Find-VaultToken
+        if ($PSCmdlet.ShouldProcess('$global:VAULT_TOKEN','Assign Vault login token')) {
+            $global:VAULT_TOKEN = $Token | Find-VaultToken
 
-        if ($Passthru) {
-            Get-Variable -Name 'VAULT_TOKEN'
+            if ($Passthru) {
+                Get-Variable -Name 'VAULT_TOKEN'
+            }
         }
     }
 
