@@ -8,10 +8,10 @@ Ben Small `bsmall[at]wayfair.com`
 This is my first open source project. Please bear with me while I stumble through the proper way to manage branches and perform pull requests when external parties are involved. Thank you for your patience.
 
 # Change Log
-[ChangeLog](\CHANGELOG.md)
+[ChangeLog](CHANGELOG.md)
 
 # Code of Conduct
-[Code of Conduct](\CODE_OF_CONDUCT.md)
+[Code of Conduct](CODE_OF_CONDUCT.md)
 
 # Module Limitations
 * LDAP is currently the only supported authentication method besides token authentication, which is implicitly supported. 
