@@ -129,10 +129,6 @@ function Format-VaultOutput {
                 'policy_data' {
                     $command = { $InputObject.data | Select-Object 'policies' }
                 }
-
-                'policy_data' {
-                    $expression = '$InputObject.data | Select-Object policies'
-                }
             }
     
             switch ($OutputType) {
