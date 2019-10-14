@@ -4,7 +4,7 @@
     RootModule = 'psVaultUtils.psm1'
     
     # Version number of this module.
-    ModuleVersion = '1.5.1'
+    ModuleVersion = '1.6.0'
     
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -95,14 +95,16 @@
         'Get-VaultLoginToken'
         'Set-VaultLoginToken'
 
+        'Get-VaultToken'
         'New-VaultToken'
         'New-VaultWrappedToken'
-        'Get-VaultToken'
-        'Update-VaultToken'
         'Revoke-VaultToken'
+        'Show-VaultTokenRole'
+        'Update-VaultToken'
 
         'Get-VaultTokenAccessor'
         'Revoke-VaultTokenAccessor'
+        'Show-VaultTokenAccessor'
 
         'Get-VaultRootTokenGenerationProgress'
         'Start-VaultRootTokenGeneration'
@@ -121,6 +123,7 @@
         'Get-VaultKVSecret'
         'Remove-VaultKVSecret'
         'Restore-VaultKVSecret'
+        'Show-VaultKVSecret'
 
         'New-VaultCubbyholeSecret'
         'Get-VaultCubbyholeSecret'
@@ -162,6 +165,9 @@
         'Renew-VaultToken'
 
         'List-VaultPolicy'
+        
+        'List-VaultKVSecret'
+        'List-VaultTokenAccessor'
     )
     
     # DSC resources to export from this module

@@ -127,7 +127,7 @@ function Format-VaultOutput {
                 }
 
                 'policy_data' {
-                    $expression = '$InputObject.data | Select-Object policies'
+                    $command = { $InputObject.data | Select-Object 'policies' }
                 }
             }
     
