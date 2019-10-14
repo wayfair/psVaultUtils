@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+### 1.7.1
+* Organizes some token-related functions into sub-folders (accessors, authentication, and roles).
+* Adds support for interacting with token roles: creating, reading, updating, listing and deleting token roles.
+* Adds `SupportsShouldProcess` to `New-` and `Update-` token role functions.
+
 ### 1.6.0
 * Adds support for functions that query Vault API endpoints that utilize the LIST method.
   * Adds Show-VaultTokenAccessor, a command that lists all active token accessors.
