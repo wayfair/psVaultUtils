@@ -16,7 +16,10 @@ function New-VaultTokenRole {
 
     This command does not produce any output.
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium'  
+    )]
     param(
         #Specifies the role whose configuration should be retrieved.
         [Parameter(
@@ -177,11 +180,13 @@ function New-VaultTokenRole {
             Body   = $jsonPayload
         }
 
-        try {
-            $result = Invoke-RestMethod @irmParams
-        }
-        catch {
-            throw
+        if ($PSCmdlet.ShouldProcess("$RoleName",'Create Vault token role')) {
+            try {
+                $result = Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
 
         $formatParams = @{

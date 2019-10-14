@@ -55,7 +55,7 @@ function Remove-VaultTokenRole {
             Method = 'Delete'
         }
 
-        if ($PSCmdlet.ShouldProcess("$RoleName",'Delete Token Role')) {
+        if ($PSCmdlet.ShouldProcess("$RoleName",'Delete Vault token role')) {
             try {
                 Invoke-RestMethod @irmParams
             }

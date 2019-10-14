@@ -15,7 +15,10 @@ function Update-VaultTokenRole {
     PS> 
 
 #>
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'Medium'  
+    )]
     param(
         #Specifies the role whose configuration should be retrieved.
         [Parameter(
@@ -176,11 +179,13 @@ function Update-VaultTokenRole {
             Body   = $jsonPayload
         }
 
-        try {
-            $result = Invoke-RestMethod @irmParams
-        }
-        catch {
-            throw
+        if ($PSCmdlet.ShouldProcess("$RoleName",'Update Vault token role')) {
+            try {
+                $result = Invoke-RestMethod @irmParams
+            }
+            catch {
+                throw
+            }
         }
 
         $formatParams = @{
