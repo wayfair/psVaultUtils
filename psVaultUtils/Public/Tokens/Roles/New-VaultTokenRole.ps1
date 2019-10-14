@@ -21,48 +21,56 @@ function New-VaultTokenRole {
         ConfirmImpact = 'Medium'  
     )]
     param(
-        #Specifies the role whose configuration should be retrieved.
+        #Specifies the name of the token role being created.
         [Parameter(
             Mandatory = $true,
             Position = 0
         )]
         [String] $RoleName,
 
+        #Specifies an array of policies that a token assigned to this role is allowed to use.
         [Parameter(
             Position = 1
         )]
         [String[]] $AllowedPolicies,
 
+        #Specifies an array of policies that a token assigned to this role is not allowed to use. 
         [Parameter(
             Position = 2
         )]
         [String] $DisallowedPolicies,
 
+        #Specifies whether a token assigned to the role should be an orphan or not Orphaned tokens do not have a parent token.
         [Parameter(
             Position = 3
         )]
         [Switch] $Orphan,
 
+        #Specifies whether a token assigned to the role should be renewable or not.
         [Parameter(
             Position = 4
         )]
         [Bool] $Renewable = $true,
 
+        #Specifies that tokens created with this role will be given a defined path suffix in addition to the role name.
         [Parameter(
             Position = 5
         )]
         [String] $PathSuffix,
 
+        #Specifies a String or Json list of allowed entity alises.
         [Parameter(
             Position = 6
         )]
         [String[]] $AllowedEntityAliases,
 
+        #Specifies a list of CIDR blocks (IP addresses which can authenticate successfully).
         [Parameter(
             Position = 7
         )]
         [String[]] $BoundCIDRs,
 
+        #Specifies an explicit max TTL for tokens assigned to this role.
         [Parameter(
             Position = 8
         )]
@@ -70,23 +78,27 @@ function New-VaultTokenRole {
         [Alias('ExplicitMaxTTL')]
         [String] $ExplicitMaxTimeToLive,
 
+        #Specifies that tokens assigned to this role should not get the 'Default' policy.
         [Parameter(
             Position = 9
         )]
         [Switch] $NoDefaultPolicy,
 
+        #Specifies the number of uses a token assigned to this role should have.
         [Parameter(
             Position = 10
         )]
         [Alias('NumUses')]
         [Int] $NumberOfUses = 0,
 
+        #Specifies a period of time set on the token role.
         [Parameter(
             Position = 11
         )]
         [ValidateScript({ $_ -match "^\d+$|^\d+[smh]$" })]
         [String] $Period,
 
+        #Specifies the type of token that should be created.
         [Parameter(
             Position = 12
         )]
@@ -182,21 +194,12 @@ function New-VaultTokenRole {
 
         if ($PSCmdlet.ShouldProcess("$RoleName",'Create Vault token role')) {
             try {
-                $result = Invoke-RestMethod @irmParams
+                Invoke-RestMethod @irmParams
             }
             catch {
                 throw
             }
         }
-
-        $formatParams = @{
-            InputObject = $result
-            DataType    = 'data'
-            JustData    = $JustData.IsPresent
-            OutputType  = $OutputType
-        }
-
-        Format-VaultOutput @formatParams
     }
 
     end {

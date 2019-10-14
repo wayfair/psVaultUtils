@@ -12,7 +12,35 @@ function Update-VaultTokenRole {
     The role name is also included in the token path, allowing all tokens created against a role to be revoked using the /sys/leases/revoke-prefix endpoint.
 
 .EXAMPLE
-    PS> 
+    PS> Get-VaultTokenRole -RoleName nomad -JustData
+
+    allowed_policies    : {dev}
+    disallowed_policies : {}
+    explicit_max_ttl    : 0
+    name                : nomad
+    orphan              : False
+    path_suffix         :
+    period              : 0
+    renewable           : False
+    token_type          : default-service
+
+    
+    PS> Update-VaultTokenRole -RoleName nomad -Renewable:$true
+
+    PS> Get-VaultTokenRole -RoleName nomad -JustData
+    
+    allowed_policies    : {dev}
+    disallowed_policies : {}
+    explicit_max_ttl    : 0
+    name                : nomad
+    orphan              : False
+    path_suffix         :
+    period              : 0
+    renewable           : True
+    token_type          : default-service
+
+    
+    Update-VaultTokenRole command does not produce any output.
 
 #>
     [CmdletBinding(
@@ -20,48 +48,56 @@ function Update-VaultTokenRole {
         ConfirmImpact = 'Medium'  
     )]
     param(
-        #Specifies the role whose configuration should be retrieved.
+        #Specifies the name of the token role being updated.
         [Parameter(
             Mandatory = $true,
             Position = 0
         )]
         [String] $RoleName,
 
+        #Specifies an array of policies that a token assigned to this role is allowed to use.
         [Parameter(
             Position = 1
         )]
         [String[]] $AllowedPolicies,
 
+        #Specifies an array of policies that a token assigned to this role is not allowed to use. 
         [Parameter(
             Position = 2
         )]
         [String] $DisallowedPolicies,
 
+        #Specifies whether a token assigned to the role should be an orphan or not Orphaned tokens do not have a parent token.
         [Parameter(
             Position = 3
         )]
         [Switch] $Orphan,
 
+        #Specifies whether a token assigned to the role should be renewable or not.
         [Parameter(
             Position = 4
         )]
         [Bool] $Renewable = $true,
 
+        #Specifies that tokens created with this role will be given a defined path suffix in addition to the role name.
         [Parameter(
             Position = 5
         )]
         [String] $PathSuffix,
 
+        #Specifies a String or Json list of allowed entity alises.
         [Parameter(
             Position = 6
         )]
         [String[]] $AllowedEntityAliases,
 
+        #Specifies a list of CIDR blocks (IP addresses which can authenticate successfully).
         [Parameter(
             Position = 7
         )]
         [String[]] $BoundCIDRs,
 
+        #Specifies an explicit max TTL for tokens assigned to this role.
         [Parameter(
             Position = 8
         )]
@@ -69,23 +105,27 @@ function Update-VaultTokenRole {
         [Alias('ExplicitMaxTTL')]
         [String] $ExplicitMaxTimeToLive,
 
+        #Specifies that tokens assigned to this role should not get the 'Default' policy.
         [Parameter(
             Position = 9
         )]
         [Switch] $NoDefaultPolicy,
 
+        #Specifies the number of uses a token assigned to this role should have.
         [Parameter(
             Position = 10
         )]
         [Alias('NumUses')]
         [Int] $NumberOfUses = 0,
 
+        #Specifies a period of time set on the token role.
         [Parameter(
             Position = 11
         )]
         [ValidateScript({ $_ -match "^\d+$|^\d+[smh]$" })]
         [String] $Period,
 
+        #Specifies the type of token that should be created.
         [Parameter(
             Position = 12
         )]
@@ -181,21 +221,12 @@ function Update-VaultTokenRole {
 
         if ($PSCmdlet.ShouldProcess("$RoleName",'Update Vault token role')) {
             try {
-                $result = Invoke-RestMethod @irmParams
+                Invoke-RestMethod @irmParams
             }
             catch {
                 throw
             }
         }
-
-        $formatParams = @{
-            InputObject = $result
-            DataType    = 'data'
-            JustData    = $JustData.IsPresent
-            OutputType  = $OutputType
-        }
-
-        Format-VaultOutput @formatParams
     }
 
     end {
